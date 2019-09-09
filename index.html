@@ -1,45 +1,74 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <link rel="stylesheet" type="text/css" href="public/styles/styles.css">
+    <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script> -->
 
 </head>
+
 <body>
-    <div class="dropdown">
-        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          Dropdown button
-        </button>
-        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-          <a class="dropdown-item" href="#">Action</a>
-          <a class="dropdown-item" href="#">Another action</a>
-          <a class="dropdown-item" href="#">Something else here</a>
-        </div>
-      </div>
-      <form>
+
+    <div class="jumbotron1">
+        <h1 class="brand">S<span id="name">arah</span>-S<span id="name">arry</span>-V<span id ="name">iktoriya</span></h1>
+        <hr>
+        <p class="word">Find the right place to go!</p>
+    </div>
+    <br><br>
+    <div id="main">
+    <span>
+        <span class="bold">What would you like to do?</span>
+        <select>
+            <option value="default">Select Activity</option>
+            <option value="skiing">Skiing</option>
+            <option value="beach">Beach</option>
+        </select>
+    </span>
+    <br><br>
+    <form>
         <div class="form-row">
-                <div class="col-7">
-                        <input type="text" class="form-control" placeholder="MM/DD/YYYY">
-                </div>
-                <div class="col-7">
-                        <input type="text" class="form-control" placeholder="MM/DD/YYYY">
-                </div>
-          <div class="col-7">
-            <input type="text" class="form-control" placeholder="City">
-          </div>
-          <div class="col">
-            <input type="text" class="form-control" placeholder="State">
-          </div>
-          <div class="col">
-            <input type="text" class="form-control" placeholder="Zip">
-          </div>
+            <span>
+                <span class="bold"> From </span>
+                <span class="col">
+                    <input type="text" class="form-control" placeholder="MM/DD/YYYY">
+
+                    <span class="bold"> To </span>
+
+                    <input type="text" class="form-control" placeholder="MM/DD/YYYY">
+                </span>
+            </span>
+            <br><br>
+            <div>
+                <span class="col-7">
+                    <input type="text" class="form-control" placeholder="City">
+                </span>
+                <span class="col">
+                    <input type="text" class="form-control" placeholder="State">
+                </span>
+                <span class="col">
+                    <input type="text" class="form-control" placeholder="Zip">
+                </span>
+            </div>
         </div>
-      </form>
-      <button type="button" class="btn btn-primary">Primary</button>
+    </form>
+    <br>
+    <br>
+    <button type="button" class="btn btn-primary">Submit</button>
+    </div>
 </body>
+
 </html>

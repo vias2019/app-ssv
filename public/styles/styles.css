@@ -1,3 +1,46 @@
 .list-group-item {
   line-height: 2.5;
 }
+.jumbotron1 {
+  height: 150px;
+  border: 2px solid white;
+  border-radius: 25px;
+  padding: 20px;
+ }
+h1 {
+  font-size: 40px;
+  font-family: URW Chancery L, cursive;
+  padding: 15px;
+  margin: 15px;
+  color: rgb(33, 33, 85) ;
+}
+.jumbotron1 {
+  background-color: rgb(131, 176, 202);
+}
+hr {
+  border: 1px solid white;
+}
+body {
+  background-image: url("../images/sea.jpg");
+  background-size: cover;
+}
+.word {
+  color: rgb(33, 33, 85);
+  font-family: URW Chancery L, cursive;
+}
+.bold,
+.word {
+  font-weight: bold;
+}
+body {
+  padding: 20px;
+}
+#main {
+  margin-left: 25%;
+  margin-right: 25%;
+  max-width: 50%;
+}
+#name {
+  font-size: 15px;
+  color: white;
+}
