@@ -3,7 +3,7 @@ var db = require("../models");
 module.exports = function(app) {
   // Load index page
   app.get("/", function(req, res) {
-    res.sendFile('../public/index.html');
+    res.sendFile("../public/index.html");
   });
 
   // Load example page and pass in an example by id

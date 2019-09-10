@@ -11,8 +11,7 @@ module.exports = function(app) {
   // Create a new example
   app.post("/", function(req, res) {
     console.log(req.body);
-    res.json({blah: true});
-    
+    res.json({ blah: true });
   });
 
   // Delete an example by id
