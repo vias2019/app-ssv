@@ -1,5 +1,22 @@
 $(document).ready(function()
 {
+    $("#submit").click(function() {
+        console.log( "Handler for .click() called." );
+        var clientInput = {
+            activity: $("#dropdown").val(),
+            dateFrom: $("from").val(),
+            dateTo: $("to").val(),
+            departureCity: $("#departure").val()
+        };
+
+        $.post("/", clientInput, function (data){
+            if (data) {
+                window.location.href = 'http://localhost:8080/public/page2.html'
+            }
+            
+        });
+    });
+
     clientData.getThemes(
     function populateDropdown(result)
     {

@@ -31,17 +31,17 @@
             <span>
                 <span class="bold"> From </span>
                 <span class="col">
-                    <input type="text" class="form-control" placeholder="MM/DD/YYYY">
+                    <input type="date" id="from" class="form-control" placeholder="MM/DD/YYYY">
 
                     <span class="bold"> To </span>
 
-                    <input type="text" class="form-control" placeholder="MM/DD/YYYY">
+                    <input type="date" id ="to" class="form-control" placeholder="MM/DD/YYYY">
                 </span>
             </span>
             <br><br>
             <div>
                 <span class="col-7">
-                    <input type="text" class="form-control" placeholder="Your City">
+                    <input type="text" id="departure" class="form-control" placeholder="Departure City">
                 </span>
                 <span class="col">
                     <input type="text" class="form-control" placeholder="State">
@@ -54,7 +54,7 @@
     </form>
     <br>
     <br>
-    <button type="button" class="btn btn-primary">Submit</button>
+    <button type="button" id="submit" class="btn btn-primary">Submit</button>
     </div>
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="js/api.js"></script>
