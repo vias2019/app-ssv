@@ -31,6 +31,7 @@ body {
 .bold,
 .word {
   font-weight: bold;
+  font-size: 20px;
 }
 body {
   padding: 20px;
@@ -43,4 +44,16 @@ body {
 #name {
   font-size: 15px;
   color: white;
+}
+.form-control{
+  border-radius: 5px;
+  height: 25px;
+}
+.btn-primary {
+  border-radius: 5px;
+  height: 25px;
+}
+#dropdown{
+  border-radius: 5px;
+  height: 25px;
 }
