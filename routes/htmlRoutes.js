@@ -1,36 +1,30 @@
-var db = require("../models");
+//var db = require("../models");
 // Axios
-var axios = require('axios');
-axios.defaults.headers.common['Authorization']=process.env.SABRE_TOKEN;
+var axios = require("axios");
+axios.defaults.headers.common.Authorization = process.env.SABRE_TOKEN;
 
-module.exports = function(app) 
-{
+module.exports = function(app) {
   // Load index page
-  // app.get("/", function(req, res) 
+  // app.get("/", function(req, res)
   // {
   //   res.sendFile("../public/index.html");
   // });
 
   // Get all themes from Sabre API
-  
-  app.get("/api/themes", function(req, res)
-  {
-    axios.get("https://api-crt.cert.havail.sabre.com" + "/v1/shop/themes")
-    .then(function (result) 
-    {
-      if (result)
-      {
-        res.send(result.data);
-      }
-      else
-      {
-        res.send("error");
-      }
-    })
-    .catch(function (err)
-    {
+
+  app.get("/api/themes", function(req, res) {
+    axios
+      .get("https://api-crt.cert.havail.sabre.com" + "/v1/shop/themes")
+      .then(function(result) {
+        if (result) {
+          res.send(result.data);
+        } else {
+          res.send("error");
+        }
+      })
+      .catch(function(err) {
         console.log(err);
-    });
+      });
   });
 
   // Load example page and pass in an example by id
