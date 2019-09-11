@@ -1,16 +1,11 @@
 var db = require("../models");
 
-module.exports = function(app) {
-  // Get all examples
-  app.get("/api/themes", function(req, res)
-  {
-    db.Example.findAll({})
-    .then(function(dbExamples) 
-    {
-      res.json(dbExamples);
-    });
-  });
+// Axios
+var axios = require('axios');
+axios.defaults.headers.common['Authorization']="Bearer: " + process.env.SABRE_TOKEN;
 
+module.exports = function(app) {
+  
   // Create a new example
   app.post("/api/examples", function(req, res) 
   {
