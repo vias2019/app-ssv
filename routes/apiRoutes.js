@@ -2,7 +2,8 @@ var db = require("../models");
 
 // Axios
 var axios = require("axios");
-axios.defaults.headers.common.Authorization = "Bearer: " + process.env.SABRE_TOKEN;
+axios.defaults.headers.common.Authorization =
+  "Bearer: " + process.env.SABRE_TOKEN;
 
 module.exports = function(app) {
   // Create a new example
