@@ -23,8 +23,6 @@
         <span class="bold">What would you like to do?</span>
         <select id="dropdown">
             <option value="default">Select Activity</option>
-            <option value="skiing">Skiing</option>
-            <option value="beach">Beach</option>
         </select>
     </span>
     <br><br>
@@ -58,26 +56,8 @@
     <br>
     <button type="button" id="submit" class="btn btn-primary">Submit</button>
     </div>
-    <script>
-        $("#submit").click(function() {
-  console.log( "Handler for .click() called." );
-  var clientInput = {
-    activity: $("#dropdown").val(),
-    dateFrom: $("from").val(),
-    dateTo: $("to").val(),
-    departureCity: $("#departure").val()
-  };
-
-  //validation
-    $.post("/", clientInput, function (data){
-        console.log(data);
-        if (data.blah) {
-            window.location.href = 'http://localhost:8080/public/page2.html'
-        }
-        
-  });
-});
-    </script>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="js/client.js"></script>
 </body>
 
 </html>
