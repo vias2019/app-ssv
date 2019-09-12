@@ -1,41 +1,47 @@
 $(document).ready(function() {
-  $("#submit").click(function() {
+
+  $("#clientInput").submit(function() {
     event.preventDefault();
     console.log("Handler for .click() called.");
-    var clientInput = {
-      activity: $("#dropdown").val(),
-      dateFrom: $("from").val(),
-      dateTo: $("to").val(),
-      departureCity: $("#departure").val()
-    };
+    // var clientInput = {
+    //   activity: $("#theme").val(),
+    //   dateFrom: $("from").val(),
+    //   dateTo: $("to").val(),
+    //   departureCity: $("#departure").val()
+    // };
 
-    $.post("/", clientInput, function(data) {
+    clientInput = $("#clientInput").serialize();
+
+    $.post("/api/itinerary", $("#clientInput").serialize())
+    .then(function(data)
+    {
       if (data) {
-        window.location.href = "http://localhost:8080/public/page2.html";
+          console.log(data);
+        //window.location.href = "http://localhost:8080/public/page2.html";
       }
     });
   });
 
-  $.ajax("/api/themes").done(function(data) {
+  $.get("/activities", function(data) {
     if (data) {
-      var sabreThemes = data.Themes;
-      var dropdown = $("#dropdown");
+        var activities = data.Themes;
+        var activityDropdown = $("#activity");
 
-      for (theme in sabreThemes) {
-        var option = $("<option>");
-        var themeVal = sabreThemes[theme].Theme.toLowerCase();
-        var themeStr = themeVal;
+        for (activity in activities) {
+            var option = $("<option>");
+            var activityVal = activities[activity].Theme.toLowerCase();
+            var activityStr = activityVal;
 
-        option.text(titleCase(themeStr.replace("-", " ")));
-        option.attr("value", themeVal);
-        dropdown.append(option);
-      }
+            option.text(titleCase(activityStr.replace("-", " ")));
+            option.attr("value", activityVal);
+            activityDropdown.append(option);
+        }
     }
   });
 
   function titleCase(str) {
     return str.toLowerCase().replace(/(^|\s)\S/g, function(t) {
-      return t.toUpperCase();
+        return t.toUpperCase();
     });
   }
 });
