@@ -49,6 +49,16 @@ $(document).ready(function() {
         location.assign("destination.html");
       }
     });
+
+    $.post("/api/forecast", clientInput).then(function(data)
+    {
+      if (data)
+      {
+        //store results to DB, updating where necessary
+
+      }
+    });
+
   });
 
   function titleCase(str) {
