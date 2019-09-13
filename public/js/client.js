@@ -1,36 +1,54 @@
 $(document).ready(function() {
-  $("#submit").click(function() {
-    event.preventDefault();
-    console.log("Handler for .click() called.");
-    var clientInput = {
-      activity: $("#dropdown").val(),
-      dateFrom: $("from").val(),
-      dateTo: $("to").val(),
-      departureCity: $("#departure").val()
-    };
 
-    $.post("/", clientInput, function(data) {
-      if (data) {
-        window.location.href = "http://localhost:8080/public/page2.html";
+  var fileName = location.pathname.split("/").slice(-1).toString();
+
+  if (fileName === "destination.html")
+  {
+    if (localStorage.getItem("fareResults"))
+    {
+      // *************** SARAH - THIS IS FOR YOU  ************** //
+      $("#results").text(localStorage.getItem("fareResults"));
+      var resultsJson = JSON.parse(localStorage.getItem("fareResults"));
+      console.log(resultsJson);
+    }
+  }
+
+  else
+  {
+    $.get("/activities", function(data)
+    {
+      if (data)
+      {
+        var activities = data.Themes;
+        var activityDropdown = $("#activity");
+
+        for (activity in activities)
+        {
+          var option = $("<option>");
+          var activityVal = activities[activity].Theme.toLowerCase();
+          var activityStr = activityVal;
+
+          option.text(titleCase(activityStr.replace("-", " ")));
+          option.attr("value", activityVal);
+          activityDropdown.append(option);
+        }
       }
     });
-  });
+  }
 
-  $.ajax("/api/themes").done(function(data) {
-    if (data) {
-      var sabreThemes = data.Themes;
-      var dropdown = $("#dropdown");
+  $("#clientInput").submit(function() {
+    event.preventDefault();
 
-      for (theme in sabreThemes) {
-        var option = $("<option>");
-        var themeVal = sabreThemes[theme].Theme.toLowerCase();
-        var themeStr = themeVal;
+    clientInput = $("#clientInput").serialize();
 
-        option.text(titleCase(themeStr.replace("-", " ")));
-        option.attr("value", themeVal);
-        dropdown.append(option);
+    $.post("/api/destination", clientInput).then(function(data)
+    {
+      if (data)
+      {
+        localStorage.setItem("fareResults", JSON.stringify(data));
+        location.assign("destination.html");
       }
-    }
+    });
   });
 
   function titleCase(str) {
