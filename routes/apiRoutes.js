@@ -1,93 +1,82 @@
-//var db = require("../models");
+var db = require("../models");
 
 // Axios
 var axios = require("axios");
 axios.defaults.headers.common.Authorization = process.env.SABRE_TOKEN;
 
-module.exports = function(app) {
-  app.post("/api/itinerary", function(req, res) {
-    var clientInput = req.body;
+module.exports = function(app)
+{
+    app.post("/api/destination", function(req, res)
+    {
+        var clientInput = req.body;
+        var clientOutput = [];
+        var fareObj = {};
+        requestStr = getFareRequest(clientInput);
 
-    // first get cities that have the selected activity
-    console.log("calling for city list");
-    var requestURL =
-      "https://api-crt.cert.havail.sabre.com/v1/lists/supported/shop/themes/" +
-      clientInput.activity;
-    axios
-      .get(requestURL)
-      .then(function(result) {
-        if (result) {
-          requestURL = "https://api-crt.cert.havail.sabre.com/v1/offers/shop";
-          var cities = result.data.Destinations;
+        axios
+        .get(requestStr)
+        .then(function(result)
+        {
+            var allFares = result.data.FareInfo; // from API
 
-          // now for each city, get fare data
-          //for (city in cities)
-          //{
-          clientInput.destination = cities[0].Destination;
-          var requestObj = getFareRequest(clientInput);
-          console.log("calling for fares for: " + cities[0].Destination);
-          console.log("requestObj: ");
-          console.log(requestObj.OTA_AirLowFareSearchRQ);
-          axios
-            .post(requestURL, requestObj)
-            .then(function(result) {
-              console.log(
-                "==========================================================="
-              );
-              console.log("fares: ");
-              console.log(result.data);
-              res.send(result.data);
+            var airportCodes = [];
+            for (fare in allFares)
+                airportCodes.push(allFares[fare].DestinationLocation);  // 'BOS'
+
+            db.Airport.findAll(
+            {
+                attributes: ['airport', 'code'],
+                where: {code: airportCodes}
             })
-            .catch(function(err) {
-              console.log(
-                "*************************************************************"
-              );
-              console.log(err);
+            .then(function(dbAirports)
+            {
+                for (fare in allFares) // for all fares from API
+                {
+                    var curDestination = allFares[fare].DestinationLocation;
+                    var airportRow = dbAirports.find(function(airportItem)
+                    {
+                        return airportItem.dataValues.code === curDestination;
+                    });
+                    fareObj =
+                    {
+                        destination: airportRow.airport,
+                        destinationCode: allFares[fare].DestinationLocation,
+                        fare: allFares[fare].LowestFare.Fare
+                    }
+                    clientOutput.push(fareObj);
+                }
+
+                clientOutput.sort(compare);
+                res.json(clientOutput);
             });
-          //}
-        } else {
-          res.send("error");
-        }
-      })
-      .catch(function(err) {
-        console.log();
-        console.log(err);
-      });
-  });
+        })
+        .catch(function(err) {
+            console.log("*************************************************************");
+            console.log(err);
+        });
+    });
 };
 
-function getFareRequest(clientInput) {
-  var start = new Date(clientInput.from).toISOString().replace("Z", "");
-  var end = new Date(clientInput.to).toISOString().replace("Z", "");
-  var home = clientInput.departure;
-  var destination = clientInput.destination;
+function getFareRequest(clientInput)
+{
+    var start = clientInput.from;
+    var end = clientInput.to;
+    var home = clientInput.departure;
+    var theme = clientInput.activity;
 
-  var requestObj = {
-    OTA_AirLowFareSearchRQ: {
-      OriginDestinationInformation: [
-        {
-          DepartureDateTime: start,
-          DestinationLocation: {
-            LocationCode: destination
-          },
-          OriginLocation: {
-            LocationCode: home
-          },
-          RPH: "0"
-        },
-        {
-          DepartureDateTime: end,
-          DestinationLocation: {
-            LocationCode: home
-          },
-          OriginLocation: {
-            LocationCode: destination
-          },
-          RPH: "1"
-        }
-      ],
-      Version: "1"
-    }
-  };
-  return requestObj;
+    var requestStr =
+    "https://api-crt.cert.havail.sabre.com/v2/shop/flights/fares?" +
+    "origin=" + home +
+    "&departuredate=" + start +
+    "&returndate=" + end +
+    "&theme=" + theme;
+
+    return requestStr;
+}
+
+function compare(fare1, fare2)
+{
+    if (fare1.fare > fare2.fare) return 1;
+    if (fare2.fare > fare1.fare) return -1;
+    return 0;
 }
