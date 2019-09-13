@@ -19,42 +19,42 @@
     </div>
     <br><br>
     <div id="main">
-    <span>
-        <span class="bold">What would you like to do?</span>
-        <select id="dropdown">
-            <option value="default">Select Activity</option>
-        </select>
-    </span>
-    <br><br>
-    <form>
+    <form id="clientInput">
+        <span>
+            <span class="bold">What would you like to do?</span>
+            <select id="activity" name="activity">
+                <option value="default">Select Activity</option>
+            </select>
+        </span>
+        <br><br>
         <div class="form-row">
             <span>
                 <span class="bold"> From </span>
                 <span class="col">
-                    <input type="date" id="from" class="form-control" placeholder="MM/DD/YYYY">
+                    <input type="date" id="from" name="from" class="form-control" placeholder="MM/DD/YYYY">
 
                     <span class="bold"> To </span>
 
-                    <input type="date" id ="to" class="form-control" placeholder="MM/DD/YYYY">
+                    <input type="date" id ="to" name="to" class="form-control" placeholder="MM/DD/YYYY">
                 </span>
             </span>
             <br><br>
             <div>
                 <span class="col-7">
-                    <input type="text" id="departure" class="form-control" placeholder="Departure City">
+                    <input type="text" id="departure" name="departure" class="form-control" placeholder="Departure City">
                 </span>
                 <span class="col">
-                    <input type="text" class="form-control" placeholder="State">
+                    <input name="state" type="text" class="form-control" placeholder="State">
                 </span>
                 <span class="col">
-                    <input type="text" class="form-control" placeholder="Zip">
+                    <input name="zip" type="text" class="form-control" placeholder="Zip">
                 </span>
             </div>
         </div>
+        <br>
+        <br>
+        <button type="submit" id="submit" class="btn btn-primary">Submit</button>
     </form>
-    <br>
-    <br>
-    <button type="button" id="submit" class="btn btn-primary">Submit</button>
     </div>
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="js/client.js"></script>

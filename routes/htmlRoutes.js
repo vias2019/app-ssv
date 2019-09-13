@@ -10,9 +10,8 @@ module.exports = function(app) {
   //   res.sendFile("../public/index.html");
   // });
 
-  // Get all themes from Sabre API
-
-  app.get("/api/themes", function(req, res) {
+  // Get all activities from Sabre API
+  app.get("/activities", function(req, res) {
     axios
       .get("https://api-crt.cert.havail.sabre.com" + "/v1/shop/themes")
       .then(function(result) {
