@@ -1,18 +1,18 @@
 module.exports = function(sequelize, DataTypes)
 {
-    var Airport = sequelize.define("Airport",
+  var Airport = sequelize.define("Airport",
     {
-        airport:
+      airport:
         {
-            type: DataTypes.STRING,
-            allowNull: false
+          type: DataTypes.STRING,
+          allowNull: false
         },
-        code:
+      code:
         {
-            type: DataTypes.STRING(4),
-            allowNull: false
+          type: DataTypes.STRING(4),
+          allowNull: false
         }
     });
 
-    return Airport;
+  return Airport;
 };

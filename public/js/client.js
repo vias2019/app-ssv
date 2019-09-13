@@ -1,38 +1,38 @@
 $(document).ready(function() {
 
-var fileName = location.pathname.split("/").slice(-1).toString();
+  var fileName = location.pathname.split("/").slice(-1).toString();
 
-if (fileName === "destination.html")
-{
+  if (fileName === "destination.html")
+  {
     if (localStorage.getItem("fareResults"))
     {
-        // *************** SARAH - THIS IS FOR YOU  ************** //
-        $("#results").text(localStorage.getItem("fareResults"));
-        var resultsJson = JSON.parse(localStorage.getItem("fareResults"));
-        console.log(resultsJson);
+      // *************** SARAH - THIS IS FOR YOU  ************** //
+      $("#results").text(localStorage.getItem("fareResults"));
+      var resultsJson = JSON.parse(localStorage.getItem("fareResults"));
+      console.log(resultsJson);
     }
-}
+  }
 
   else
   {
     $.get("/activities", function(data)
     {
-        if (data)
+      if (data)
+      {
+        var activities = data.Themes;
+        var activityDropdown = $("#activity");
+
+        for (activity in activities)
         {
-            var activities = data.Themes;
-            var activityDropdown = $("#activity");
+          var option = $("<option>");
+          var activityVal = activities[activity].Theme.toLowerCase();
+          var activityStr = activityVal;
 
-            for (activity in activities)
-            {
-                var option = $("<option>");
-                var activityVal = activities[activity].Theme.toLowerCase();
-                var activityStr = activityVal;
-
-                option.text(titleCase(activityStr.replace("-", " ")));
-                option.attr("value", activityVal);
-                activityDropdown.append(option);
-            }
+          option.text(titleCase(activityStr.replace("-", " ")));
+          option.attr("value", activityVal);
+          activityDropdown.append(option);
         }
+      }
     });
   }
 
@@ -43,11 +43,11 @@ if (fileName === "destination.html")
 
     $.post("/api/destination", clientInput).then(function(data)
     {
-        if (data)
-        {
-            localStorage.setItem("fareResults", JSON.stringify(data));
-            location.assign("destination.html");
-        }
+      if (data)
+      {
+        localStorage.setItem("fareResults", JSON.stringify(data));
+        location.assign("destination.html");
+      }
     });
   });
 
