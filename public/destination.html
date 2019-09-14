@@ -7,7 +7,10 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="styles/styles.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-
+ 
+   <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+       <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    
 <title> SSV Travel</title>
     <link rel="stylesheet" type="text/css" src="public/styles/styles.css">
     <title>SSV Travel</title>
@@ -39,10 +42,10 @@
               </button>
             </div>
             <div class="modal-body">
-               <div id="curve_chart" style="width: 900px; height: 500px"></div>
+               
+              <div id="curve_chart" style="width: 1000px; height: 30px"></div>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-primary">Save changes</button>
               <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
             </div>
           </div>
@@ -58,5 +61,12 @@
 
     <script src="js/client.js"></script>
     <script src="js/chart.js"></script>
+    <script>
+      $(".btn btn-primary").click(function() {
+    var chart =$("<div/>").attr({
+      
+    })
+});
+    </script>
 </body>
 </html>
