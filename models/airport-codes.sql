@@ -1,10 +1,15 @@
-CREATE TABLE IF NOT EXISTS airports (
+DROP DATABASE IF EXISTS airport_db;
+CREATE DATABASE airport_db;
+
+use airport_db;
+CREATE TABLE airports (
+  id integer auto_increment,
   `airport` varchar(255) NOT NULL,
   `code` varchar(4) NOT NULL,
-  PRIMARY KEY (`airport`)
+  PRIMARY KEY (id)
 );
 
-
+select * from airports;
 INSERT INTO airports (`airport`, `code`) VALUES
 ('Aalborg, Denmark ', 'AAL'),
 ('Aalesund, Norway ', 'AES'),
