@@ -55,7 +55,62 @@ module.exports = function(app)
         console.log(err);
       });
   });
+
+  app.post("/api/trends", function(req, res)
+  {
+    var clientInput = req.body;
+    // get historical data first:
+    var historical = true;
+    var requestStr = getTrendRequest(clientInput, historical);
+    axios
+      .get(requestStr)
+      .then(function(historicalResult)
+      {
+          // get future data next
+          requestStr = getTrendRequest(clientInput, !historical);
+            axios
+            .get(requestStr)
+            .then(function(forecastResult)
+            {
+                var historicalData = historicalResult.data;
+                var forecastData = forecastResult.data;
+                console.log("*************************  HISTORICAL ************************");
+                console.log(historicalData);
+                console.log("*************************  FORECAST ************************");
+                console.log(forecastData);
+                res.send("ok");
+            });
+      });
+  });
 };
+
+function getTrendRequest(clientInput, historical)
+{
+  var start = clientInput.from;
+  var end = clientInput.to;
+  var home = clientInput.departure;
+  var destination = clientInput.destination;
+  var url = "https://api-crt.cert.havail.sabre.com";
+  var endpoint = "";
+
+if (historical)
+{
+    endpoint = "/v1/shop/historical/flights/fares?";
+}
+else
+{
+    endpoint = "/v2/forecast/flights/fares?";
+}
+
+  var requestStr =
+    url + endpoint +
+    "origin=" + home +
+    "&destination=" + destination +
+    "&departuredate=" + start +
+    "&returndate=" + end;
+
+  return requestStr;
+}
 
 function getFareRequest(clientInput)
 {

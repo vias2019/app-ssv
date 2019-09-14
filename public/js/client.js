@@ -50,12 +50,12 @@ $(document).ready(function() {
       }
     });
 
-    $.post("/api/forecast", clientInput).then(function(data)
+    $.post("/api/trends", clientInput).then(function(data)
     {
       if (data)
       {
         //store results to DB, updating where necessary
-
+        console.log("data");
       }
     });
 
