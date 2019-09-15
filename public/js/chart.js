@@ -1,5 +1,5 @@
 //See the trend button
-function chart () {
+
 
 
   google.charts.load("current", { packages: ["corechart"] });
@@ -27,6 +27,6 @@ function chart () {
 
     chart.draw(data, options);
   }
-}
+
 module.exports = chart;
 
