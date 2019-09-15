@@ -2,9 +2,9 @@
 
 module.exports = function(sequelize, DataTypes)
 {
-  var Table = sequelize.define("chart",
+  var Chart = sequelize.define("chart",
     {
-      months: DataTypes.STRING,
+      date: DataTypes.DATE,
       airfare: DataTypes.INTEGER,
       pages: DataTypes.INTEGER,
       destinationCity: DataTypes.STRING,
@@ -14,5 +14,5 @@ module.exports = function(sequelize, DataTypes)
       freezeTableName: true
     });
 
-  return Table;
+  return Chart;
 };

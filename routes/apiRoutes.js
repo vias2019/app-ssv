@@ -78,24 +78,59 @@ module.exports = function(app)
                 console.log(historicalData);
                 console.log("*************************  FORECAST ************************");
                 console.log(forecastData);
+
+                var origin = historicalData.OriginLocation;
+                var destination = historicalData.OriginLocation;
+
+                for (row in historicalData.FareInfo)
+                {
+                    console.log("*************************  FARE DATA ROW ************************");
+                    console.log(historicalData.FareInfo[row]);
+
+                    var airfare = historicalData.FareInfo[row].LowestFare;
+                    var date = historicalData.FareInfo[row].ShopDateTime;
+
+                    db.Chart.upsert(
+                    {
+                        airfare: airfare
+                    },
+                    {
+                        where:
+                        {
+                            date: date,
+                            origin: origin,
+                            destination: destination
+                        }
+                    });
+                }
                 res.send("ok");
+                //res.json([historicalData, forecastData]);
+            })
+            .catch(function(err)
+            {
+                console.log(err)
             });
+      })
+      .catch(function (err)
+      {
+          console.log(err);
       });
   });
 };
 
 function getTrendRequest(clientInput, historical)
 {
+
   var start = clientInput.from;
   var end = clientInput.to;
   var home = clientInput.departure;
-  var destination = clientInput.destination;
+  var destination = clientInput.destination || "LAS";
   var url = "https://api-crt.cert.havail.sabre.com";
   var endpoint = "";
 
 if (historical)
 {
-    endpoint = "/v1/shop/historical/flights/fares?";
+    endpoint = "/v1/historical/shop/flights/fares?";
 }
 else
 {
