@@ -67,3 +67,33 @@ $(document).ready(function() {
     });
   }
 });
+
+$("#button1").click(function() {
+  // var chart=$(`<div id="curve_chart" style="width: 1000px; height: 30px">${drawChart()}</div>`);
+  google.charts.load("current", { packages: ["corechart"] });
+  google.charts.setOnLoadCallback(drawChart);
+  //ajax call
+  function drawChart() {
+    var data = google.visualization.arrayToDataTable([
+    //mysql
+      ["Days", "Price"],
+      ["2004", 1000],
+      ["2005", 1170],
+      ["2006", 660],
+      ["2007", 1030]
+    ]);
+
+    var options = {
+      title: "Airfare Trend for the next 2 months",
+      curveType: "function",
+      legend: { position: "bottom" }
+    };
+
+    var chart = new google.visualization.LineChart(
+      document.getElementById("curve_chart")
+    );
+
+    chart.draw(data, options);
+  }
+  
+});
