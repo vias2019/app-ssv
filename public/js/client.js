@@ -33,6 +33,10 @@ $(document).ready(function() {
           activityDropdown.append(option);
         }
       }
+    })
+    .catch(function(err)
+    {
+        console.log(err);
     });
   }
 
@@ -40,26 +44,37 @@ $(document).ready(function() {
     event.preventDefault();
 
     clientInput = $("#clientInput").serialize();
-
+    localStorage.setItem("clientInput", clientInput);
     $.post("/api/destination", clientInput).then(function(data)
     {
-      if (data)
-      {
-        localStorage.setItem("fareResults", JSON.stringify(data));
-        location.assign("destination.html");
-      }
-    });
-
-    $.post("/api/trends", clientInput).then(function(data)
+        if (data)
+        {
+            localStorage.setItem("fareResults", JSON.stringify(data));
+            location.assign("destination.html");
+        }
+    })
+    .catch(function(err)
     {
-      if (data)
-      {
-        //store results to DB, updating where necessary
-        console.log("data");
-      }
+        console.log(err);
     });
-
   });
+
+  $(".chart").click(function()
+    {
+        var clientInput = localStorage.getItem("clientInput");
+        $.post("/api/trends", clientInput).then(function(data)
+        {
+            if (data)
+            {
+                localStorage.setItem("fareResults", JSON.stringify(data));
+                location.assign("destination.html");
+            }
+        })
+        .catch(function(err)
+        {
+            console.log(err);
+        });
+    });
 
   function titleCase(str) {
     return str.toLowerCase().replace(/(^|\s)\S/g, function(t) {
