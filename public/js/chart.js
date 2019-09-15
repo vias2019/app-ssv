@@ -27,6 +27,4 @@ function drawChart() {
 
   chart.draw(data, options);
 }
-
 module.exports = chart;
-
