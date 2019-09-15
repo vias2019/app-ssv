@@ -34,10 +34,10 @@ $(document).ready(function() {
         }
       }
     })
-    .catch(function(err)
-    {
+      .catch(function(err)
+      {
         console.log(err);
-    });
+      });
   }
 
   $("#clientInput").submit(function() {
@@ -47,34 +47,34 @@ $(document).ready(function() {
     localStorage.setItem("clientInput", clientInput);
     $.post("/api/destination", clientInput).then(function(data)
     {
-        if (data)
-        {
-            localStorage.setItem("fareResults", JSON.stringify(data));
-            location.assign("destination.html");
-        }
+      if (data)
+      {
+        localStorage.setItem("fareResults", JSON.stringify(data));
+        location.assign("destination.html");
+      }
     })
-    .catch(function(err)
-    {
+      .catch(function(err)
+      {
         console.log(err);
-    });
+      });
   });
 
   $(".chart").click(function()
+  {
+    var clientInput = localStorage.getItem("clientInput");
+    $.post("/api/trends", clientInput).then(function(data)
     {
-        var clientInput = localStorage.getItem("clientInput");
-        $.post("/api/trends", clientInput).then(function(data)
-        {
-            if (data)
-            {
-                localStorage.setItem("fareResults", JSON.stringify(data));
-                location.assign("destination.html");
-            }
-        })
-        .catch(function(err)
-        {
-            console.log(err);
-        });
-    });
+      if (data)
+      {
+        localStorage.setItem("fareResults", JSON.stringify(data));
+        location.assign("destination.html");
+      }
+    })
+      .catch(function(err)
+      {
+        console.log(err);
+      });
+  });
 
   function titleCase(str) {
     return str.toLowerCase().replace(/(^|\s)\S/g, function(t) {
