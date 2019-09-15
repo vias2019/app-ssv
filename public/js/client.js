@@ -33,18 +33,14 @@ $(document).ready(function() {
           activityDropdown.append(option);
         }
       }
-    })
-      .catch(function(err)
-      {
-        console.log(err);
-      });
+    });
   }
 
   $("#clientInput").submit(function() {
     event.preventDefault();
 
     clientInput = $("#clientInput").serialize();
-    localStorage.setItem("clientInput", clientInput);
+
     $.post("/api/destination", clientInput).then(function(data)
     {
       if (data)
@@ -52,28 +48,17 @@ $(document).ready(function() {
         localStorage.setItem("fareResults", JSON.stringify(data));
         location.assign("destination.html");
       }
-    })
-      .catch(function(err)
-      {
-        console.log(err);
-      });
-  });
+    });
 
-  $(".chart").click(function()
-  {
-    var clientInput = localStorage.getItem("clientInput");
-    $.post("/api/trends", clientInput).then(function(data)
+    $.post("/api/forecast", clientInput).then(function(data)
     {
       if (data)
       {
-        localStorage.setItem("fareResults", JSON.stringify(data));
-        location.assign("destination.html");
+        //store results to DB, updating where necessary
+
       }
-    })
-      .catch(function(err)
-      {
-        console.log(err);
-      });
+    });
+
   });
 
   function titleCase(str) {
