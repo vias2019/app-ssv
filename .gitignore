@@ -2,8 +2,3 @@
 node_modules
 npm-debug.log
 .env
-<<<<<<< HEAD
-.eslintrc.json
-.eslintignore
-=======
->>>>>>> 089b225... latest version of apis
