@@ -113,9 +113,8 @@ module.exports = function(app)
       })
       .catch(function (err)
       {
-          console.log(err);
-                res.send("ok");
-            });
+            console.log(err);
+            res.send("ok");
       });
   });
 };
