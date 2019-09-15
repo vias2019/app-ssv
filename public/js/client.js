@@ -74,6 +74,13 @@ $(document).ready(function() {
         {
             console.log(err);
         });
+    $.post("/api/trends", clientInput).then(function(data)
+    {
+      if (data)
+      {
+        //store results to DB, updating where necessary
+        console.log("data");
+      }
     });
 
   function titleCase(str) {
@@ -110,5 +117,5 @@ $("#button1").click(function() {
 
     chart.draw(data, options);
   }
-  
+
 });
