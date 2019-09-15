@@ -29,4 +29,3 @@ function chart () {
   }
 }
 module.exports = chart;
-
