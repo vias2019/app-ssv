@@ -1,0 +1,21 @@
+{
+  "development": {
+    "username": "root",
+    "password": "cat123",
+    "database": "project2",
+    "host": "localhost",
+    "dialect": "mysql"
+  },
+  "test": {
+    "username": "root",
+    "password": "cat123",
+    "database": "project2",
+    "host": "localhost",
+    "dialect": "mysql",
+    "logging": false
+  },
+  "production": {
+    "use_env_variable": "JAWSDB_URL",
+    "dialect": "mysql"
+  }
+}
