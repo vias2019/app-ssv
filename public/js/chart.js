@@ -27,8 +27,4 @@ function drawChart() {
 
   chart.draw(data, options);
 }
-<<<<<<< HEAD
-
 module.exports = chart;
-=======
->>>>>>> 089b225... latest version of apis
