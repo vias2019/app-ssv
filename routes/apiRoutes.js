@@ -59,65 +59,153 @@ module.exports = function(app)
   app.post("/api/trends", function(req, res)
   {
     var clientInput = req.body;
-    // get historical data first:
-    var historical = true;
-    var requestStr = getTrendRequest(clientInput, historical);
-    axios
-      .get(requestStr)
-      .then(function(historicalResult)
+    var chartOutput = {historical: [], forecast: {}};
+
+    // get historical data
+    getChartHistorical(clientInput, function(historicalResult)
+    {
+      chartOutput.historical = historicalResult;
+      console.log(" CHART OUTPUT - HISTORICAL ");
+
+      // get future data next
+      getChartForecast(clientInput, function(forecastResult)
       {
-        // get future data next
-        requestStr = getTrendRequest(clientInput, !historical);
-        axios
-          .get(requestStr)
-          .then(function(forecastResult)
+        chartOutput.forecast = forecastResult;
+        console.log(" CHART OUTPUT - FORECAST ");
+        res.json(chartOutput);
+      });
+    });
+  });
+};
+
+function getChartHistorical(clientInput, cb)
+{
+  var requestStr = getTrendRequest(clientInput, true);
+  axios
+    .get(requestStr)
+    .then(function(historicalResult)
+    {
+      var promises = [];
+      var historicalData = historicalResult.data;
+      var origin = historicalData.OriginLocation;
+      var destination = historicalData.DestinationLocation;
+      var historicalFares = historicalData.FareInfo;
+      for (var row=0; row<historicalFares.length; row++)
+      {
+        var airfare = historicalFares[row].LowestFare;
+        var date = historicalFares[row].ShopDateTime;
+
+        promises.push(db.Chart.findOrCreate(
           {
-            var historicalData = historicalResult.data;
-            var forecastData = forecastResult.data;
-            console.log("*************************  HISTORICAL ************************");
-            console.log(historicalData);
-            console.log("*************************  FORECAST ************************");
-            console.log(forecastData);
-
-            var origin = historicalData.OriginLocation;
-            var destination = historicalData.OriginLocation;
-
-            for (row in historicalData.FareInfo)
-            {
-              console.log("*************************  FARE DATA ROW ************************");
-              console.log(historicalData.FareInfo[row]);
-
-              var airfare = historicalData.FareInfo[row].LowestFare;
-              var date = historicalData.FareInfo[row].ShopDateTime;
-
-              db.Chart.upsert(
+            defaults:
                 {
+                  date: date,
+                  originCity: origin,
+                  destinationCity: destination,
                   airfare: airfare
+                },
+            where:
+                {
+                  date: date,
+                  originCity: origin,
+                  destinationCity: destination
+                }
+          })
+          .then(function(historicalRow, wasCreated)
+          {
+            if (wasCreated)
+            {
+              console.log("NEW RECORD: ");
+              console.log(historicalRow);
+            }
+            else
+            {
+              console.log("ROW ALREADY EXISTED: ");
+              console.log(historicalRow);
+              promises.push(db.Chart.update(
+                {
+                  airfare: airfare,
                 },
                 {
                   where:
                         {
-                          date: date,
-                          origin: origin,
-                          destination: destination
+                          date: date, // this is the date that the historical data was "shopped"
+                          originCity: origin,
+                          destinationCity: destination
                         }
-                });
+                })
+                .then(function(rowsUpdated)
+                {
+                  console.log(rowsUpdated + " ROWS UPDATED");
+                }));
             }
-            res.send("ok");
-            //res.json([historicalData, forecastData]);
-          })
-          .catch(function(err)
-          {
-            console.log(err);
-          });
-      })
-      .catch(function (err)
-      {
-        console.log(err);
-        res.send("ok");
-      });
-  });
-};
+          }));
+      }
+      Promise.all(promises)
+        .then(function()
+        {
+          db.Chart.findAll({where: {originCity: origin, destinationCity: destination}})
+            .then(function(allHistorical)
+            {
+              var historicalArray = [];
+              for (historicalRow in allHistorical)
+              {
+                var currentRow = allHistorical[historicalRow].dataValues;
+                console.log(" HISTORICAL DATA ROW ");
+                console.log(currentRow);
+                historicalArray.push(
+                  {
+                    origin: currentRow.originCity,
+                    destination: currentRow.destinationCity,
+                    date: currentRow.date,
+                    airfare: currentRow.airfare
+                  });
+              }
+              cb(historicalArray);
+            });
+        })
+        .catch(function(err)
+        {
+          console.log(err);
+          res.send(err);
+        });
+    })
+    .catch(function (err)
+    {
+      console.log(err);
+      res.send(err);
+    });
+}
+
+function getChartForecast(clientInput, cb)
+{
+  requestStr = getTrendRequest(clientInput, false);
+  axios
+    .get(requestStr)
+    .then(function(forecastResult)
+    {
+      var forecastData = forecastResult.data;
+      console.log("*************** FORECAST DATA *********************");
+      //console.log(forecastData);
+
+      var forecastOutput =
+        {
+          origin: forecastData.OriginLocation,
+          destination: forecastData.DestinationLocation,
+          start: forecastData.DepartureDateTime,
+          end: forecastData.ReturnDateTime,
+          recommendation: forecastData.Recommendation,
+          fare: forecastData.LowestFare,
+          trend: forecastData.Direction
+        };
+      console.log(forecastOutput);
+      cb(forecastOutput);
+    })
+    .catch(function(err)
+    {
+      console.log(err);
+    });
+}
 
 function getTrendRequest(clientInput, historical)
 {
