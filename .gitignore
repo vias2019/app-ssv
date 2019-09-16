@@ -2,6 +2,9 @@
 node_modules
 npm-debug.log
 .env
+<<<<<<< HEAD
 .eslintrc.json
 .eslintignore
 config.json
+=======
+>>>>>>> d61f33da676f37a2fd401da7fef8aa95ffe4d87c

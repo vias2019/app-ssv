@@ -1,0 +1,39 @@
+HOW TO GET SABRE APIs WORKING
+
+1. Create your Sabre Dev Account here:
+    https://beta.developer.sabre.com/user/register
+
+2. Go to the "My Account" page, and select the "Applications" tab.
+
+3. Click "Add New Application" and note the Client ID and the Client Secret that are created.
+
+4. Run this command in your Terminal:
+    echo -n `echo -n "Your Client ID" | base64`:`echo -n "Your Client Secret" | base64` |base64
+
+5. Copy the output from the above command.
+
+6. Open Postman and enter in the following:
+    a. Select the POST request type.
+    b. Request URL: https://api-crt.cert.havail.sabre.com/v2/auth/token
+    c. ** Select the "Headers" tab **
+    d. Add "Content-Type" (without quotes) as a key, and enter "application/x-www-form-urlencoded" (without quotes) as the value.
+    e. Add "Authorization" (without quotes) as a key, and enter what you copied in step 5 above as the value.
+    f. ** Select the "Body" tab **
+    g. Select the "x-www-form-urlencoded" option on the Body tab.
+    h. Add "grant_type" (without quotes) as a key, and enter "client_credentials" (without quotes) as the value.
+    i.Click the "Send" button.
+    j. You should now have a response from Sabre that has an "access-token". If not, get the error and contact me so I can help troubleshoot.
+    k. Copy your "access-token"
+    l. Enter "Bearer" and then a space, and then the value you copied from step k. above in our .env file for the SABRE_TOKEN value. So the SABRE_TOKEN value should look something like this:
+        "Bearer <your token>" (No quotes though)
+
+        You should now be able to use our site/application with your token.
+
+
+TO MAKE A SABRE API CALL USING POSTMAN
+
+1. Select the GET request type.
+2. Enter the request string you wish to send to Sabre.
+    a. NOTE: our tokens require the test environment, so the hostname MUST be replaced with "api-crt.cert.havail.sabre.com" in the request URL.
+3. On the Authorization tab, select "Bearer Token" as the type, and then on the right side where it says "Token" enter YOUR access_token from step 6k above.
+4. Click the "Send" button. You should get the response in the "Body" tab at the bottom of the window.

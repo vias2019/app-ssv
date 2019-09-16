@@ -1,4 +1,5 @@
-$(document).ready(function() {
+$(document).ready(function ()
+{
 
   var fileName = location.pathname.split("/").slice(-1).toString();
 
@@ -12,10 +13,9 @@ $(document).ready(function() {
       console.log(resultsJson);
     }
   }
-
   else
   {
-    $.get("/activities", function(data)
+    $.get("/activities", function (data)
     {
       if (data)
       {
@@ -33,40 +33,100 @@ $(document).ready(function() {
           activityDropdown.append(option);
         }
       }
-    });
+    })
+      .catch(function (err)
+      {
+        console.log(err);
+      });
   }
 
-  $("#clientInput").submit(function() {
+  $("#clientInput").submit(function ()
+  {
     event.preventDefault();
 
     clientInput = $("#clientInput").serialize();
-
-    $.post("/api/destination", clientInput).then(function(data)
-    {
-      if (data)
+    localStorage.setItem("clientInput", clientInput);
+    $.post("/api/destination", clientInput)
+      .then(function (data)
       {
-        localStorage.setItem("fareResults", JSON.stringify(data));
-        location.assign("destination.html");
-      }
-    });
+        if (data)
+        {
+          localStorage.setItem("fareResults", JSON.stringify(data));
+          location.assign("destination.html");
+        }
+      })
+      .catch(function (err)
+      {
+        console.log(err);
+      });
+  });
 
-    $.post("/api/forecast", clientInput).then(function(data)
+  $(".chart").click(function ()
+  {
+    var clientInput = localStorage.getItem("clientInput");
+    $.post("/api/trends", clientInput)
+      .then(function (data)
+      {
+        if (data)
+        {
+          localStorage.setItem("fareResults", JSON.stringify(data));
+          location.assign("destination.html");
+        }
+      })
+      .catch(function (err)
+      {
+        console.log(err);
+      });
+
+    $.post("/api/trends", clientInput).then(function (data)
     {
       if (data)
       {
         //store results to DB, updating where necessary
-
+        console.log("data");
       }
     });
-
   });
 
-  function titleCase(str) {
-    return str.toLowerCase().replace(/(^|\s)\S/g, function(t) {
+  $("#button1").click(function ()
+  {
+    // var chart=$(`<div id="curve_chart" style="width: 1000px; height: 30px">${drawChart()}</div>`);
+    google.charts.load("current", { packages: ["corechart"] });
+    google.charts.setOnLoadCallback(drawChart);
+    //ajax call
+    function drawChart()
+    {
+      var data = google.visualization.arrayToDataTable([
+        //mysql
+        ["Days", "Price"],
+        ["2004", 1000],
+        ["2005", 1170],
+        ["2006", 660],
+        ["2007", 1030]
+      ]);
+
+      var options =
+            {
+              title: "Airfare Trend for the next 2 months",
+              curveType: "function",
+              legend: { position: "bottom" }
+            };
+
+      var chart = new google.visualization.LineChart(document.getElementById("curve_chart"));
+
+      chart.draw(data, options);
+    }
+  });
+
+  function titleCase(str)
+  {
+    return str.toLowerCase().replace(/(^|\s)\S/g, function (t)
+    {
       return t.toUpperCase();
     });
   }
 });
+<<<<<<< HEAD
 
 $("#button1").click(function() {
   // var chart=$(`<div id="curve_chart" style="width: 1000px; height: 30px">${drawChart()}</div>`);
@@ -104,3 +164,5 @@ $("#button1").click(function() {
     document.getElementById("from").value=today.toLocaleDateString('en-CA');
     
   });
+=======
+>>>>>>> d61f33da676f37a2fd401da7fef8aa95ffe4d87c
