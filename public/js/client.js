@@ -126,7 +126,6 @@ $(document).ready(function ()
     });
   }
 });
-<<<<<<< HEAD
 
 $("#button1").click(function() {
   // var chart=$(`<div id="curve_chart" style="width: 1000px; height: 30px">${drawChart()}</div>`);
@@ -164,5 +163,3 @@ $("#button1").click(function() {
     document.getElementById("from").value=today.toLocaleDateString('en-CA');
     
   });
-=======
->>>>>>> d61f33da676f37a2fd401da7fef8aa95ffe4d87c
