@@ -1,19 +1,25 @@
 //See the trend button
+//var mysql =require("../../env");
 
 
+$("#button1").click(function (){
 
 google.charts.load("current", { packages: ["corechart"] });
 google.charts.setOnLoadCallback(drawChart);
 
-function drawChart() {
-  var data = google.visualization.arrayToDataTable([
-    //mysql
-    ["Year", "Sales", "Expenses"],
-    ["2004", 1000, 400],
-    ["2005", 1170, 460],
-    ["2006", 660, 1120],
-    ["2007", 1030, 540]
-  ]);
+ // Send the GET request.
+ $.get("/api/chart", function (search) {
+  console.log("Got search:", search);
+  
+var data = google.visualization.arrayToDataTable(search);
+  // var data = google.visualization.arrayToDataTable([
+  //   //mysql
+  //   ["Year", "Sales"],
+  //   ["2004", 1000],
+  //   ["2005", 1170],
+  //   ["2006", 660],
+  //   ["2007", 1030]
+  // ]);
 
   var options = {
     title: "Airfare Trend for last 12 months",
@@ -26,5 +32,5 @@ function drawChart() {
   );
 
   chart.draw(data, options);
-}
-module.exports = chart;
+});
+});
