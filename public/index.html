@@ -9,13 +9,12 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="styles/styles.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-
     <link rel="stylesheet" type="text/css" src="public/styles/styles.css">
+
 </head>
 
 <body>
-
-    <div class="jumbotron1">
+      <div class="jumbotron1">
         <h1 class="brand">S<span id="name">arah</span>-S<span id="name">harry</span>-V<span id ="name">iktoriya</span></h1>
         <hr>
         <p class="word">Find the right place to go!</p>
@@ -34,11 +33,14 @@
             <span>
                 <span class="bold"> From </span>
                 <span class="col">
-                    <input type="date" id="from" name="from" class="form-control" placeholder="MM/DD/YYYY">
-
+                    <input type="date" id="from" name="from" class="form-control">
+                  
+                      
                     <span class="bold"> To </span>
 
-                    <input type="date" id ="to" name="to" class="form-control" placeholder="MM/DD/YYYY">
+                    <input type="date" id ="to" name="to" class="form-control" 
+                    placeholder="MM/DD/YYYY">
+                   
                 </span>
             </span>
             <br><br>
@@ -51,7 +53,14 @@
                 </span>
                 <span class="col">
                     <input name="zip" type="text" class="form-control" placeholder="Zip">
-                </span>
+                </span> 
+                
+            </div><br>
+            <div class="col">
+                <!-- <input name="code" type="text" class="form-control" placeholder="Destination Airport Code"> -->
+                <select type="text" class="form-control" id="destination" placeholder="Select City">
+                    <option id="option1" value ="U.S.">Select Origin City</option>
+                  </select>
             </div>
         </div>
         <br>
@@ -69,6 +78,8 @@
 
     <script src="js/client.js"></script>
     <script src="js/chart.js"></script>
+    <script src="js/home.js"></script>
+
 </body>
 
 </html>
