@@ -1,7 +1,7 @@
 $(document).ready(function ()
 {
-  var today = new Date();
-  document.getElementById("from").value=today.toLocaleDateString('en-CA');
+  // var today = new Date();
+  // document.getElementById("from").value=today.toLocaleDateString('en-CA');
 
 
   var fileName = location.pathname.split("/").slice(-1).toString();
@@ -14,6 +14,47 @@ $(document).ready(function ()
       $("#results").text(localStorage.getItem("fareResults"));
       var resultsJson = JSON.parse(localStorage.getItem("fareResults"));
       console.log(resultsJson);
+
+      //Below is Sarah's code: //
+
+      // the function creatList() should be called when the submit button on the homepage is clicked 
+      
+      function createList(){
+          
+           // List the destination airports based on the chosen theme. If more than 5, just limit to 5. 
+             var m;
+
+             if(resultsJson.length <= 5){
+                m=resultsJson.length;
+               }else{
+                m=5;
+             }
+  
+             for(var i=0; i<m; i++){
+                var listClass =$("<li class='list-group-item'>");
+  
+                var buttonClass = $('<button data-target="#myModal" data-toggle="modal" type="button" class="btn btn-info chart" data-city = '+ resultsJson[i].destination + "'>");
+
+                var listContent = resultsJson[i].destination + resultsJson[i].airfare;
+                
+                listClass.append(listContent);
+                
+                listClass.append(buttonClass);
+  
+                $(".list-group").append(listClass);
+              }
+            }
+
+          
+      //'button' here is the buttons dynamically created on the destination.html 
+          $('button').on('click',function(){
+            var airport = $(this).data('city');
+            //call the airfare trend chart of the airport: //
+            drawChart(airport);
+        
+          });
+    
+      // Above is Sarah's code//
     }
   }
   else
