@@ -64,6 +64,7 @@ $(document).ready(function ()
       });
   });
 
+  // GET CHART DATA FOR THE MODAL
   $(".chart").click(function ()
   {
     var clientInput = localStorage.getItem("clientInput");
@@ -72,23 +73,13 @@ $(document).ready(function ()
       {
         if (data)
         {
-          localStorage.setItem("fareResults", JSON.stringify(data));
-          location.assign("destination.html");
+          console.log(data); // VICTORIA - THIS IS WHAT YOU NEED (data object)
         }
       })
       .catch(function (err)
       {
         console.log(err);
       });
-
-    $.post("/api/trends", clientInput).then(function (data)
-    {
-      if (data)
-      {
-        //store results to DB, updating where necessary
-        console.log("data");
-      }
-    });
   });
 
   function titleCase(str)

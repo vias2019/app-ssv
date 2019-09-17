@@ -1,6 +1,10 @@
 //See the trend button
 //var mysql =require("../../env");
 
+function chart()
+{
+  google.charts.load("current", { packages: ["corechart"] });
+  google.charts.setOnLoadCallback(drawChart);
 
 $("#button1").click(function (){
 
