@@ -1,5 +1,6 @@
-$(document).ready(function ()
-{
+$(document).ready(function (){
+  var today = new Date();
+  document.getElementById("from").value=today.toLocaleDateString('en-CA');
 
   var fileName = location.pathname.split("/").slice(-1).toString();
 
