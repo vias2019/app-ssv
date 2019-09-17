@@ -1,7 +1,7 @@
 $(document).ready(function ()
 {
-  var today = new Date();
-  document.getElementById("from").value=today.toLocaleDateString('en-CA');
+  //var today = new Date();
+  //document.getElementById("from").value=today.toLocaleDateString('en-CA');
 
 
   var fileName = location.pathname.split("/").slice(-1).toString();
@@ -64,23 +64,7 @@ $(document).ready(function ()
       });
   });
 
-  // GET CHART DATA FOR THE MODAL
-  $(".chart").click(function ()
-  {
-    var clientInput = localStorage.getItem("clientInput");
-    $.post("/api/trends", clientInput)
-      .then(function (data)
-      {
-        if (data)
-        {
-          console.log(data); // VICTORIA - THIS IS WHAT YOU NEED (data object)
-        }
-      })
-      .catch(function (err)
-      {
-        console.log(err);
-      });
-  });
+  
 
   function titleCase(str)
   {

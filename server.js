@@ -13,10 +13,10 @@ app.use(express.json());
 app.use(express.static("public"));
 
 // Routes
-require("./routes/apiHome")(app);
+//require("./routes/apiHome")(app);
 require("./routes/apiRoutes")(app);
 require("./routes/htmlRoutes")(app);
-require("./routes/apiChart")(app);
+//require("./routes/apiChart")(app);
 
 var syncOptions = { force: false };
 
