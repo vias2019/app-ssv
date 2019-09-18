@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // SECTIONS:
 // 1. DOCUMENT.READY() - THIS IS EVERYTHING THAT NEEDS TO LOAD AFTER THE DOCUMENT IS LOADED.
 // 2. FUNCTIONS TO SUPPORT ALL CLIENT FILES
@@ -5,6 +6,14 @@
 // ***************** SECTION 1 - DOCUMENT.READY() ***********************
 $(document).ready(function ()
 {
+=======
+$(document).ready(function ()
+{
+  var today = new Date();
+  document.getElementById("from").value=today.toLocaleDateString('en-CA');
+
+
+>>>>>>> 8c17e184fd6a6f7ed0ddcf8eeb500509d8fa85ab
   var fileName = location.pathname.split("/").slice(-1).toString();
 
   if (fileName === "destination.html")
@@ -105,6 +114,7 @@ $(document).ready(function ()
   }
 });
 
+<<<<<<< HEAD
 // ***************** SECTION 2 - FUNCTIONS TO SUPPORT CLIENT FILES ***************
 function makeChart(data)
 {
@@ -145,6 +155,25 @@ $("#button1").click(function () {
 
     var options = {
       title: "Airfare Trend for last 12 months",
+=======
+$("#button1").click(function() {
+  // var chart=$(`<div id="curve_chart" style="width: 1000px; height: 30px">${drawChart()}</div>`);
+  google.charts.load("current", { packages: ["corechart"] });
+  google.charts.setOnLoadCallback(drawChart);
+  //ajax call
+  function drawChart() {
+    var data = google.visualization.arrayToDataTable([
+    //mysql
+      ["Days", "Price"],
+      ["2004", 1000],
+      ["2005", 1170],
+      ["2006", 660],
+      ["2007", 1030]
+    ]);
+
+    var options = {
+      title: "Airfare Trend for the next 2 months",
+>>>>>>> 8c17e184fd6a6f7ed0ddcf8eeb500509d8fa85ab
       curveType: "function",
       legend: { position: "bottom" }
     };
@@ -154,6 +183,14 @@ $("#button1").click(function () {
     );
 
     chart.draw(data, options);
+<<<<<<< HEAD
   });
 });
 */
+=======
+  }
+  
+});
+
+
+>>>>>>> 8c17e184fd6a6f7ed0ddcf8eeb500509d8fa85ab
