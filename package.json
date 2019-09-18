@@ -1,5 +1,5 @@
 {
-  "name": "Project2-SSV",
+  "name": "Project2-SSV2",
   "version": "1.0.0",
   "description": "Project 2",
   "main": "server.js",
@@ -16,7 +16,7 @@
     "express": "^4.17.1",
     "moment": "^2.24.0",
     "mysql": "^2.17.1",
-    "mysql2": "^1.6.5",
+    "mysql2": "^1.7.0",
     "sequelize": "^5.8.6",
     "sequelize-cli": "^5.5.1"
   },
@@ -31,4 +31,3 @@
     "prettier": "^1.17.1"
   }
 }
- 

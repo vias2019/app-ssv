@@ -1,6 +1,5 @@
 var db = require("../models");
 
-// Axios
 var axios = require("axios");
 axios.defaults.headers.common.Authorization = process.env.SABRE_TOKEN;
 
@@ -113,26 +112,19 @@ function getChartHistorical(clientInput, cb)
           })
           .then(function(historicalRow, wasCreated)
           {
-            if (wasCreated)
+            if (!wasCreated)
             {
-              console.log("NEW RECORD: ");
-              console.log(historicalRow);
-            }
-            else
-            {
-              console.log("ROW ALREADY EXISTED: ");
-              console.log(historicalRow);
               promises.push(db.Chart.update(
                 {
                   airfare: airfare,
                 },
                 {
                   where:
-                        {
-                          date: date, // this is the date that the historical data was "shopped"
-                          originCity: origin,
-                          destinationCity: destination
-                        }
+                    {
+                        date: date, // this is the date that the historical data was "shopped"
+                        originCity: origin,
+                        destinationCity: destination
+                    }
                 })
                 .then(function(rowsUpdated)
                 {
@@ -156,10 +148,8 @@ function getChartHistorical(clientInput, cb)
               for (historicalRow in allHistorical)
               {
                 var currentRow = allHistorical[historicalRow].dataValues;
-                console.log(" HISTORICAL DATA ROW ");
-                console.log(currentRow);
-
-                record = [currentRow.date, currentRow.airfare];
+                var rowDate = moment(currentRow.date).format('DD');
+                record = [rowDate, currentRow.airfare];
                 historicalArray.push(record);
               }
               cb(historicalArray);
@@ -186,9 +176,6 @@ function getChartForecast(clientInput, cb)
     .then(function(forecastResult)
     {
       var forecastData = forecastResult.data;
-      console.log("*************** FORECAST DATA *********************");
-      //console.log(forecastData);
-
       var forecastOutput =
         {
           origin: forecastData.OriginLocation,
@@ -199,7 +186,6 @@ function getChartForecast(clientInput, cb)
           fare: forecastData.LowestFare,
           trend: forecastData.Direction
         };
-      console.log(forecastOutput);
       cb(forecastOutput);
     })
     .catch(function(err)
