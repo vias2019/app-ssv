@@ -20,7 +20,6 @@ $(document).ready(function ()
   }
   else
   {
-
       var today = moment().format('YYYY-MM-DD');
       $("#from").val(today);
       $("#to").val(today);
@@ -83,11 +82,14 @@ $(document).ready(function ()
   {
     var destination = $(this).data('city');
     var clientInput = localStorage.getItem("clientInput");
+    var destination = $(this).data('city');
+
     $.post("/api/trends", clientInput)
       .then(function (data)
       {
         if (data)
         {
+            console.log("VIKTORIYA'S DATA");
           console.log(data); // VICTORIA - THIS IS WHAT YOU NEED (data object)
           makeChart(data);
         }

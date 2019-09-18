@@ -148,18 +148,19 @@ function getChartHistorical(clientInput, cb)
             .then(function(allHistorical)
             {
               var historicalArray = [];
+              // HEADER ROW
+              var record = ["Date", "Price"];
+              historicalArray.push(record);
+
+              // DATA ROWS
               for (historicalRow in allHistorical)
               {
                 var currentRow = allHistorical[historicalRow].dataValues;
                 console.log(" HISTORICAL DATA ROW ");
                 console.log(currentRow);
-                historicalArray.push(
-                  {
-                    origin: currentRow.originCity,
-                    destination: currentRow.destinationCity,
-                    date: currentRow.date,
-                    airfare: currentRow.airfare
-                  });
+
+                record = [currentRow.date, currentRow.airfare];
+                historicalArray.push(record);
               }
               cb(historicalArray);
             });
