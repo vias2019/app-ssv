@@ -81,6 +81,7 @@ $(document).ready(function ()
   // GET CHART DATA FOR THE MODAL
   $(".chart").click(function ()
   {
+    var destination = $(this).data('city');
     var clientInput = localStorage.getItem("clientInput");
     $.post("/api/trends", clientInput)
       .then(function (data)
@@ -130,7 +131,10 @@ function makeChart(data)
   }
 }
 
+  
 
+
+  
 /* OLD CHART.JS
 
 $("#button1").click(function () {
