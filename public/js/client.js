@@ -12,8 +12,9 @@ $(document).ready(function ()
     if (localStorage.getItem("fareResults"))
     {
       // *************** SARAH - THIS IS FOR YOU  ************** //
-      $("#results").text(localStorage.getItem("fareResults"));
+
       var resultsJson = JSON.parse(localStorage.getItem("fareResults"));
+      $("#results").text(resultsJson[0].destination);
       console.log(resultsJson);
     }
   }
