@@ -24,13 +24,6 @@ $(document).ready(function ()
     $("#from").val(today);
     $("#to").val(today);
 
-    var options =
-    {
-      formatting:
-        '<div class="$(unique-result)" data-index="$(i)">$(IATA) - $(name)</div>'
-    };
-    AirportInput("departure", options);
-
     $.get("/activities", function (data)
     {
       if (data)
@@ -60,9 +53,19 @@ $(document).ready(function ()
   {
     event.preventDefault();
 
-    clientInput = $("#clientInput").serialize();
-    localStorage.setItem("clientInput", clientInput);
-    $.post("/api/destination", clientInput)
+    var temp = $("#clientInput").serializeArray();
+    var storage = [];
+    var tempobj = {};
+    var name = "";
+    for (input in temp)
+    {
+        name = temp[input].name;
+        tempobj = { [name]:  temp[input].value };
+        storage.push(tempobj);
+    }
+    localStorage.setItem("clientInput", JSON.stringify(storage));
+
+    $.post("/api/destination", $("#clientInput").serialize())
       .then(function (data)
       {
         if (data)
@@ -80,7 +83,7 @@ $(document).ready(function ()
   // GET CHART DATA FOR THE MODAL
   $(".chart").click(function ()
   {
-    
+
     var clientInput = localStorage.getItem("clientInput");
     var destination = $(this).data('city');
     console.log(destination);
@@ -133,10 +136,10 @@ function makeChart(data)
   }
 }
 
-  
 
 
-  
+
+
 /* OLD CHART.JS
 
 $("#button1").click(function () {
