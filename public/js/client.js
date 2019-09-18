@@ -111,14 +111,20 @@ $(document).ready(function ()
 
 // ***************** SECTION 2 - FUNCTIONS TO SUPPORT CLIENT FILES ***************
 function makeChart(data)
-{console.log(data);
+{
+  localStorage.setItem("chartData", JSON.stringify(data));
   // var chart=$(`<div id="curve_chart" style="width: 1000px; height: 30px">${drawChart()}</div>`);
   google.charts.load("current", { packages: ["corechart"] });
-  google.charts.setOnLoadCallback(drawChart);
+  google.charts.setOnLoadCallback(drawChart); 
+}
 
-  function drawChart()
+function drawChart()
   {
-    var data = google.visualization.arrayToDataTable(data);
+    var chartData = JSON.parse(localStorage.getItem("chartData"));
+    chartData = chartData.historical;
+    console.log("FOR GOOGLE");
+    console.log(chartData.historical);
+    var data = google.visualization.arrayToDataTable(chartData);
 
     var options =
     {
@@ -131,8 +137,6 @@ function makeChart(data)
 
     chart.draw(data, options);
   }
-}
-
   
 
 
