@@ -20,14 +20,14 @@ $(document).ready(function ()
   }
   else
   {
-      var today = moment().format('YYYY-MM-DD');
-      $("#from").val(today);
-      $("#to").val(today);
+    var today = moment().format('YYYY-MM-DD');
+    $("#from").val(today);
+    $("#to").val(today);
 
     var options =
     {
-        formatting:
-        `<div class="$(unique-result)" data-index="$(i)">$(IATA) - $(name)</div>`
+      formatting:
+        '<div class="$(unique-result)" data-index="$(i)">$(IATA) - $(name)</div>'
     };
     AirportInput("departure", options);
 
@@ -80,16 +80,16 @@ $(document).ready(function ()
   // GET CHART DATA FOR THE MODAL
   $(".chart").click(function ()
   {
-    var destination = $(this).data('city');
+    
     var clientInput = localStorage.getItem("clientInput");
     var destination = $(this).data('city');
-
+    console.log(destination);
     $.post("/api/trends", clientInput)
       .then(function (data)
       {
         if (data)
         {
-            console.log("VIKTORIYA'S DATA");
+          console.log("VIKTORIYA'S DATA");
           console.log(data); // VICTORIA - THIS IS WHAT YOU NEED (data object)
           makeChart(data);
         }
@@ -111,7 +111,7 @@ $(document).ready(function ()
 
 // ***************** SECTION 2 - FUNCTIONS TO SUPPORT CLIENT FILES ***************
 function makeChart(data)
-{
+{console.log(data);
   // var chart=$(`<div id="curve_chart" style="width: 1000px; height: 30px">${drawChart()}</div>`);
   google.charts.load("current", { packages: ["corechart"] });
   google.charts.setOnLoadCallback(drawChart);
