@@ -1,5 +1,5 @@
 var db = require("../models");
-
+var moment = require("moment");
 var axios = require("axios");
 axios.defaults.headers.common.Authorization = process.env.SABRE_TOKEN;
 
@@ -58,19 +58,19 @@ module.exports = function(app)
   app.post("/api/trends", function(req, res)
   {
     var clientInput = req.body;
+console.log("***************** CLIENT INPUT ********************");
+    console.log(clientInput);
     var chartOutput = {historical: [], forecast: {}};
 
     // get historical data
     getChartHistorical(clientInput, function(historicalResult)
     {
       chartOutput.historical = historicalResult;
-      console.log(" CHART OUTPUT - HISTORICAL ");
 
       // get future data next
       getChartForecast(clientInput, function(forecastResult)
       {
         chartOutput.forecast = forecastResult;
-        console.log(" CHART OUTPUT - FORECAST ");
         res.json(chartOutput);
       });
     });
@@ -125,10 +125,6 @@ function getChartHistorical(clientInput, cb)
                         originCity: origin,
                         destinationCity: destination
                     }
-                })
-                .then(function(rowsUpdated)
-                {
-                  console.log(rowsUpdated + " ROWS UPDATED");
                 }));
             }
           }));
@@ -158,13 +154,13 @@ function getChartHistorical(clientInput, cb)
         .catch(function(err)
         {
           console.log(err);
-          res.send(err);
+          cb(err);
         });
     })
     .catch(function (err)
     {
       console.log(err);
-      res.send(err);
+      cb(err);
     });
 }
 

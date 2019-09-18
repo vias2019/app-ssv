@@ -60,12 +60,15 @@ $(document).ready(function ()
     for (input in temp)
     {
         name = temp[input].name;
-        tempobj = { [name]:  temp[input].value };
+        value = temp[input].value;
+        tempobj = { [name]: value };
         storage.push(tempobj);
     }
     localStorage.setItem("clientInput", JSON.stringify(storage));
 
-    $.post("/api/destination", $("#clientInput").serialize())
+    var clientInput = $("#clientInput").serialize();
+    localStorage.setItem("queryString", clientInput);
+    $.post("/api/destination", clientInput)
       .then(function (data)
       {
         if (data)
@@ -83,17 +86,14 @@ $(document).ready(function ()
   // GET CHART DATA FOR THE MODAL
   $(".chart").click(function ()
   {
+    var clientInput = localStorage.getItem("queryString");
+    //var destination = $(this).data('city');
 
-    var clientInput = localStorage.getItem("clientInput");
-    var destination = $(this).data('city');
-    console.log(destination);
     $.post("/api/trends", clientInput)
       .then(function (data)
       {
         if (data)
         {
-          console.log("VIKTORIYA'S DATA");
-          console.log(data); // VICTORIA - THIS IS WHAT YOU NEED (data object)
           makeChart(data);
         }
       })
@@ -125,8 +125,6 @@ function drawChart()
 {
   var chartData = JSON.parse(localStorage.getItem("chartData"));
   chartData = chartData.historical;
-  console.log("FOR GOOGLE");
-  console.log(chartData.historical);
   var data = google.visualization.arrayToDataTable(chartData);
 
   var options =
