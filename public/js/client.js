@@ -1,7 +1,10 @@
-$(document).ready(function (){
-  var today = new Date();
-  document.getElementById("from").value=today.toLocaleDateString('en-CA');
+// SECTIONS:
+// 1. DOCUMENT.READY() - THIS IS EVERYTHING THAT NEEDS TO LOAD AFTER THE DOCUMENT IS LOADED.
+// 2. FUNCTIONS TO SUPPORT ALL CLIENT FILES
 
+// ***************** SECTION 1 - DOCUMENT.READY() ***********************
+$(document).ready(function ()
+{
   var fileName = location.pathname.split("/").slice(-1).toString();
 
   if (fileName === "destination.html")
@@ -16,6 +19,18 @@ $(document).ready(function (){
   }
   else
   {
+
+      var today = moment().format('YYYY-MM-DD');
+      $("#from").val(today);
+      $("#to").val(today);
+
+    var options =
+    {
+        formatting:
+        `<div class="$(unique-result)" data-index="$(i)">$(IATA) - $(name)</div>`
+    };
+    AirportInput("departure", options);
+
     $.get("/activities", function (data)
     {
       if (data)
@@ -72,42 +87,13 @@ $(document).ready(function (){
         if (data)
         {
           console.log(data); // VICTORIA - THIS IS WHAT YOU NEED (data object)
+          makeChart(data);
         }
       })
       .catch(function (err)
       {
         console.log(err);
       });
-  });
-
-  $("#button1").click(function ()
-  {
-    // var chart=$(`<div id="curve_chart" style="width: 1000px; height: 30px">${drawChart()}</div>`);
-    google.charts.load("current", { packages: ["corechart"] });
-    google.charts.setOnLoadCallback(drawChart);
-    //ajax call
-    function drawChart()
-    {
-      var data = google.visualization.arrayToDataTable([
-        //mysql
-        ["Days", "Price"],
-        ["2004", 1000],
-        ["2005", 1170],
-        ["2006", 660],
-        ["2007", 1030]
-      ]);
-
-      var options =
-            {
-              title: "Airfare Trend for the next 2 months",
-              curveType: "function",
-              legend: { position: "bottom" }
-            };
-
-      var chart = new google.visualization.LineChart(document.getElementById("curve_chart"));
-
-      chart.draw(data, options);
-    }
   });
 
   function titleCase(str)
@@ -118,3 +104,56 @@ $(document).ready(function (){
     });
   }
 });
+
+// ***************** SECTION 2 - FUNCTIONS TO SUPPORT CLIENT FILES ***************
+function makeChart(data)
+{
+  // var chart=$(`<div id="curve_chart" style="width: 1000px; height: 30px">${drawChart()}</div>`);
+  google.charts.load("current", { packages: ["corechart"] });
+  google.charts.setOnLoadCallback(drawChart);
+
+  function drawChart()
+  {
+    var data = google.visualization.arrayToDataTable(data);
+
+    var options =
+    {
+      title: "Airfare Trend for the next 2 months",
+      curveType: "function",
+      legend: { position: "bottom" }
+    };
+
+    var chart = new google.visualization.LineChart(document.getElementById("curve_chart"));
+
+    chart.draw(data, options);
+  }
+}
+
+
+/* OLD CHART.JS
+
+$("#button1").click(function () {
+
+  google.charts.load("current", { packages: ["corechart"] });
+  google.charts.setOnLoadCallback(drawChart);
+
+  // Send the GET request.
+  $.get("/api/chart", function (search) {
+    console.log("Got search:", search);
+
+    var data = google.visualization.arrayToDataTable(search);
+
+    var options = {
+      title: "Airfare Trend for last 12 months",
+      curveType: "function",
+      legend: { position: "bottom" }
+    };
+
+    var chart = new google.visualization.LineChart(
+      document.getElementById("curve_chart")
+    );
+
+    chart.draw(data, options);
+  });
+});
+*/

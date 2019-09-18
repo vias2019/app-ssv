@@ -5,61 +5,46 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="shortcut icon" href="#">
     <title>SSV Travel</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="styles/styles.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-
     <link rel="stylesheet" type="text/css" src="public/styles/styles.css">
 </head>
 
 <body>
-
-    <div class="jumbotron1">
-        <h1 class="brand">S<span id="name">arah</span>-S<span id="name">harry</span>-V<span id ="name">iktoriya</span></h1>
+      <div class="jumbotron1">
+        <h1>S<span class="name">arah</span>-S<span class="name">harry</span>-V<span class ="name">iktoriya</span></h1>
         <hr>
         <p class="word">Find the right place to go!</p>
     </div>
     <br><br>
     <div id="main">
-    <form id="clientInput">
-        <span>
-            <span class="bold">What would you like to do?</span>
-            <select id="activity" name="activity">
-                <option value="default">Select Activity</option>
-            </select>
-        </span>
-        <br><br>
-        <div class="form-row">
-            <span>
-                <span class="bold"> From </span>
-                <span class="col">
-                    <input type="date" id="from" name="from" class="form-control" placeholder="MM/DD/YYYY">
-
-                    <span class="bold"> To </span>
-
-                    <input type="date" id ="to" name="to" class="form-control" placeholder="MM/DD/YYYY">
-                </span>
-            </span>
-            <br><br>
+        <form id="clientInput">
             <div>
-                <span class="col-7">
-                    <input type="text" id="departure" name="departure" class="form-control" placeholder="Departure City">
-                </span>
-                <span class="col">
-                    <input name="state" type="text" class="form-control" placeholder="State">
-                </span>
-                <span class="col">
-                    <input name="zip" type="text" class="form-control" placeholder="Zip">
-                </span>
+                <span class="bold">What would you like to do?</span>
+                <select id="activity" name="activity"></select>
+                <br><br>
             </div>
-        </div>
-        <br>
-        <br>
-        <button type="submit" id="submit" class="btn btn-primary">Submit</button>
-    </form>
+            <div>
+                <div class="form-group">
+                    <label for="from">From:</label>
+                    <input type="date" id="from" name="from" class="form-control">
+
+                    <label for="to">To:</label>
+                    <input type="date" id ="to" name="to" class="form-control">
+
+                    <label for="departure">Origin:</label>
+                    <input type="text" id="departure" name="departure" class="form-control" placeholder="Departure City">
+                </div>
+            </div>
+            <button type="submit" id="submit" class="btn btn-primary">Submit</button>
+        </form>
     </div>
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 
@@ -67,8 +52,10 @@
 
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
+    <script src="https://cdn.jsdelivr.net/npm/airport-autocomplete-js@latest/dist/index.browser.min.js"></script>
+
     <script src="js/client.js"></script>
-    <script src="js/chart.js"></script>
+
 </body>
 
 </html>

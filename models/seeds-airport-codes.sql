@@ -1,15 +1,3 @@
-DROP DATABASE IF EXISTS airport_db;
-CREATE DATABASE airport_db;
-
-use airport_db;
-CREATE TABLE airports
-(
-    id integer NOT NULL auto_increment,
-    airport varchar(255) NOT NULL,
-    code varchar(4) NOT NULL,
-    PRIMARY KEY (id)
-);
-
     INSERT INTO airports
     (airport, code)
     VALUES
