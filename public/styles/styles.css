@@ -58,3 +58,6 @@ body {
   border-radius: 25px;
   padding: 20px;
 }
+.modal-content{
+  max-width: 700px;
+}

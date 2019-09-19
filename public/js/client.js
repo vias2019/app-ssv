@@ -186,9 +186,12 @@ function drawChart()
 
   var options =
     {
-      title: "Airfare Trend for the next 2 months",
+      title: "Airfare Trend for the last 2 weeks",
       curveType: "function",
-      legend: { position: "bottom" }
+      legend: { position: "bottom" },
+      pointSize: 5,
+      vAxis: {gridlines: {count: 10}},
+      hAxis: {slantedText: true, slantedTextAngle: 50, format: 'long'}    
     };
 
   var chart = new google.visualization.LineChart(document.getElementById("curve_chart"));
