@@ -132,7 +132,12 @@ function getChartHistorical(clientInput, cb)
       Promise.all(promises)
         .then(function()
         {
-          db.Chart.findAll({where: {originCity: origin, destinationCity: destination}})
+          db.Chart.findAll({
+              where: {originCity: origin, destinationCity: destination},
+              order:
+                [
+                    ['date', 'ASC'],
+                ]})
             .then(function(allHistorical)
             {
               var historicalArray = [];
@@ -144,7 +149,7 @@ function getChartHistorical(clientInput, cb)
               for (historicalRow in allHistorical)
               {
                 var currentRow = allHistorical[historicalRow].dataValues;
-                var rowDate = moment(currentRow.date).format('DD');
+                var rowDate = moment(currentRow.date).format('MM/DD');
                 record = [rowDate, currentRow.airfare];
                 historicalArray.push(record);
               }
