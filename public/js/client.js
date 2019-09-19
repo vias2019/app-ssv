@@ -5,7 +5,7 @@
 // ***************** SECTION 1 - DOCUMENT.READY() ***********************
 
 $(document).ready(function ()
-{ 
+{
   var fileName = location.pathname.split("/").slice(-1).toString();
 
   if (fileName === "destination.html")
@@ -18,10 +18,6 @@ $(document).ready(function ()
       //$("#results").text(resultsJson[0].destination);
       //console.log(resultsJson);
       createList();
-     
-
-       
-   
     }
   }
   else
@@ -36,7 +32,7 @@ $(document).ready(function ()
       {
         var activities = data.Themes;
         var activityDropdown = $("#activity");
-        
+
         for (activity in activities)
         {
           var option = $("<option>");
@@ -92,15 +88,20 @@ $(document).ready(function ()
   // GET CHART DATA FOR THE MODAL
   $(".chart").click(function ()
   {
-    var clientInput = localStorage.getItem("queryString");
-    //var destination = $(this).data('city');
+    var queryString = localStorage.getItem("queryString");
+    var destination = $(this).data('city');
+    queryString = queryString + "&destination=" + destination;
+    console.log("DESTINATION");
+    console.log(destination);
+    console.log("CLIENT INPUT");
+    console.log(queryString);
 
-    $.post("/api/trends", clientInput)
+    $.post("/api/trends", queryString)
       .then(function (data)
       {
         if (data)
         {
-          makeChart(data);
+          makeChart(destination, data);
         }
       })
       .catch(function (err)
@@ -118,12 +119,18 @@ $(document).ready(function ()
   }
 
   function createList(){
+<<<<<<< HEAD
    
       
       var theme = JSON.parse(localStorage.getItem("clientInput"));
       $(".lead").html("These are our suggested destinations based on the activity-" + theme[0].activity + ", sorted by fare price.");
          
     // List the destination airports based on the chosen theme. If more than 5, just limit to 5. 
+=======
+      $(".lead").html("These are our suggested destinations based on the activity-" + localStorage.getItem("clientInput") + ", sorted by fare price.");
+
+    // List the destination airports based on the chosen theme. If more than 5, just limit to 5.
+>>>>>>> master
       var m;
 
       if(resultsJson.length <= 5){
@@ -142,8 +149,15 @@ $(document).ready(function ()
          var des = resultsJson[i].destination;
 
          var fare = resultsJson[i].fare;
+<<<<<<< HEAD
          
          var desClass = $('<div class="col-4">' + des + '</div>');
+=======
+
+         var desClass = $('<p style="margin-left: 10px">' + des + '</p>');
+
+         var fareClass = $('<p style="margin-left: 10px">$' + fare + '</p>');
+>>>>>>> master
 
          var fareClass = $('<div class="col-4">$' + fare + '</div>');
 
@@ -153,9 +167,15 @@ $(document).ready(function ()
          listClass.append(desClass);
 
          listClass.append(fareClass);
+<<<<<<< HEAD
          
   
          
+=======
+
+         //listClass.append(listContent);
+
+>>>>>>> master
          listClass.append(buttonClass);
 
          $("#des-row").append(listClass);
@@ -163,15 +183,27 @@ $(document).ready(function ()
        }
      }
 
+<<<<<<< HEAD
      
+=======
+     //'button' here is the buttons dynamically created on the destination.html
+    //  $('button').on('click',function(){
+    //   var airport = $(this).data('city');
+    //   //call the airfare trend chart of the airport: //
+    //   drawChart(airport);
+
+    // });
+>>>>>>> master
 
 });
 
 // ***************** SECTION 2 - FUNCTIONS TO SUPPORT CLIENT FILES ***************
-function makeChart(data)
+function makeChart(destination, data)
 {
+    console.log("DATA FOR CHART");
+          console.log(data);
+          console.log(destination);
   localStorage.setItem("chartData", JSON.stringify(data));
-  // var chart=$(`<div id="curve_chart" style="width: 1000px; height: 30px">${drawChart()}</div>`);
   google.charts.load("current", { packages: ["corechart"] });
   google.charts.setOnLoadCallback(drawChart);
 }
@@ -179,6 +211,8 @@ function makeChart(data)
 function drawChart()
 {
   var chartData = JSON.parse(localStorage.getItem("chartData"));
+  console.log("CHART DATA");
+  console.log(chartData);
   chartData = chartData.historical;
   var data = google.visualization.arrayToDataTable(chartData);
 
