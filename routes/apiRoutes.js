@@ -1,6 +1,5 @@
 var db = require("../models");
-
-// Axios
+var moment = require("moment");
 var axios = require("axios");
 axios.defaults.headers.common.Authorization = process.env.SABRE_TOKEN;
 
@@ -59,19 +58,19 @@ module.exports = function(app)
   app.post("/api/trends", function(req, res)
   {
     var clientInput = req.body;
+console.log("***************** CLIENT INPUT ********************");
+    console.log(clientInput);
     var chartOutput = {historical: [], forecast: {}};
 
     // get historical data
     getChartHistorical(clientInput, function(historicalResult)
     {
       chartOutput.historical = historicalResult;
-      console.log(" CHART OUTPUT - HISTORICAL ");
 
       // get future data next
       getChartForecast(clientInput, function(forecastResult)
       {
         chartOutput.forecast = forecastResult;
-        console.log(" CHART OUTPUT - FORECAST ");
         res.json(chartOutput);
       });
     });
@@ -113,30 +112,19 @@ function getChartHistorical(clientInput, cb)
           })
           .then(function(historicalRow, wasCreated)
           {
-            if (wasCreated)
+            if (!wasCreated)
             {
-              console.log("NEW RECORD: ");
-              console.log(historicalRow);
-            }
-            else
-            {
-              console.log("ROW ALREADY EXISTED: ");
-              console.log(historicalRow);
               promises.push(db.Chart.update(
                 {
                   airfare: airfare,
                 },
                 {
                   where:
-                        {
-                          date: date, // this is the date that the historical data was "shopped"
-                          originCity: origin,
-                          destinationCity: destination
-                        }
-                })
-                .then(function(rowsUpdated)
-                {
-                  console.log(rowsUpdated + " ROWS UPDATED");
+                    {
+                        date: date, // this is the date that the historical data was "shopped"
+                        originCity: origin,
+                        destinationCity: destination
+                    }
                 }));
             }
           }));
@@ -148,18 +136,17 @@ function getChartHistorical(clientInput, cb)
             .then(function(allHistorical)
             {
               var historicalArray = [];
+              // HEADER ROW
+              var record = ["Date", "Price"];
+              historicalArray.push(record);
+
+              // DATA ROWS
               for (historicalRow in allHistorical)
               {
                 var currentRow = allHistorical[historicalRow].dataValues;
-                console.log(" HISTORICAL DATA ROW ");
-                console.log(currentRow);
-                historicalArray.push(
-                  {
-                    origin: currentRow.originCity,
-                    destination: currentRow.destinationCity,
-                    date: currentRow.date,
-                    airfare: currentRow.airfare
-                  });
+                var rowDate = moment(currentRow.date).format('DD');
+                record = [rowDate, currentRow.airfare];
+                historicalArray.push(record);
               }
               cb(historicalArray);
             });
@@ -167,13 +154,13 @@ function getChartHistorical(clientInput, cb)
         .catch(function(err)
         {
           console.log(err);
-          res.send(err);
+          cb(err);
         });
     })
     .catch(function (err)
     {
       console.log(err);
-      res.send(err);
+      cb(err);
     });
 }
 
@@ -185,9 +172,6 @@ function getChartForecast(clientInput, cb)
     .then(function(forecastResult)
     {
       var forecastData = forecastResult.data;
-      console.log("*************** FORECAST DATA *********************");
-      //console.log(forecastData);
-
       var forecastOutput =
         {
           origin: forecastData.OriginLocation,
@@ -198,7 +182,6 @@ function getChartForecast(clientInput, cb)
           fare: forecastData.LowestFare,
           trend: forecastData.Direction
         };
-      console.log(forecastOutput);
       cb(forecastOutput);
     })
     .catch(function(err)

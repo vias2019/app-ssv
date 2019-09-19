@@ -26,17 +26,9 @@ $(document).ready(function ()
   }
   else
   {
-
-      var today = moment().format('YYYY-MM-DD');
-      $("#from").val(today);
-      $("#to").val(today);
-
-    var options =
-    {
-        formatting:
-        `<div class="$(unique-result)" data-index="$(i)">$(IATA) - $(name)</div>`
-    };
-    AirportInput("departure", options);
+    var today = moment().format('YYYY-MM-DD');
+    $("#from").val(today);
+    $("#to").val(today);
 
     $.get("/activities", function (data)
     {
@@ -67,8 +59,21 @@ $(document).ready(function ()
   {
     event.preventDefault();
 
-    clientInput = $("#clientInput").serialize();
-    localStorage.setItem("clientInput", clientInput);
+    var temp = $("#clientInput").serializeArray();
+    var storage = [];
+    var tempobj = {};
+    var name = "";
+    for (input in temp)
+    {
+        name = temp[input].name;
+        value = temp[input].value;
+        tempobj = { [name]: value };
+        storage.push(tempobj);
+    }
+    localStorage.setItem("clientInput", JSON.stringify(storage));
+
+    var clientInput = $("#clientInput").serialize();
+    localStorage.setItem("queryString", clientInput);
     $.post("/api/destination", clientInput)
       .then(function (data)
       {
@@ -87,13 +92,14 @@ $(document).ready(function ()
   // GET CHART DATA FOR THE MODAL
   $(".chart").click(function ()
   {
-    var clientInput = localStorage.getItem("clientInput");
+    var clientInput = localStorage.getItem("queryString");
+    //var destination = $(this).data('city');
+
     $.post("/api/trends", clientInput)
       .then(function (data)
       {
         if (data)
         {
-          console.log(data); // VICTORIA - THIS IS WHAT YOU NEED (data object)
           makeChart(data);
         }
       })
@@ -166,53 +172,26 @@ $(document).ready(function ()
 // ***************** SECTION 2 - FUNCTIONS TO SUPPORT CLIENT FILES ***************
 function makeChart(data)
 {
+  localStorage.setItem("chartData", JSON.stringify(data));
   // var chart=$(`<div id="curve_chart" style="width: 1000px; height: 30px">${drawChart()}</div>`);
   google.charts.load("current", { packages: ["corechart"] });
   google.charts.setOnLoadCallback(drawChart);
+}
 
-  function drawChart()
-  {
-    var data = google.visualization.arrayToDataTable(data);
+function drawChart()
+{
+  var chartData = JSON.parse(localStorage.getItem("chartData"));
+  chartData = chartData.historical;
+  var data = google.visualization.arrayToDataTable(chartData);
 
-    var options =
+  var options =
     {
       title: "Airfare Trend for the next 2 months",
       curveType: "function",
       legend: { position: "bottom" }
     };
 
-    var chart = new google.visualization.LineChart(document.getElementById("curve_chart"));
+  var chart = new google.visualization.LineChart(document.getElementById("curve_chart"));
 
-    chart.draw(data, options);
-  }
+  chart.draw(data, options);
 }
-
-
-
-/* OLD CHART.JS
-
-$("#button1").click(function () {
-
-  google.charts.load("current", { packages: ["corechart"] });
-  google.charts.setOnLoadCallback(drawChart);
-
-  // Send the GET request.
-  $.get("/api/chart", function (search) {
-    console.log("Got search:", search);
-
-    var data = google.visualization.arrayToDataTable(search);
-
-    var options = {
-      title: "Airfare Trend for last 12 months",
-      curveType: "function",
-      legend: { position: "bottom" }
-    };
-
-    var chart = new google.visualization.LineChart(
-      document.getElementById("curve_chart")
-    );
-
-    chart.draw(data, options);
-  });
-});
-*/
