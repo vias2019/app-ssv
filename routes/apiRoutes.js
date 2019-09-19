@@ -58,8 +58,6 @@ module.exports = function(app)
   app.post("/api/trends", function(req, res)
   {
     var clientInput = req.body;
-console.log("***************** CLIENT INPUT ********************");
-    console.log(clientInput);
     var chartOutput = {historical: [], forecast: {}};
 
     // get historical data
@@ -79,6 +77,8 @@ console.log("***************** CLIENT INPUT ********************");
 
 function getChartHistorical(clientInput, cb)
 {
+    console.log("REQUEST STRING");
+    console.log(clientInput);
   var requestStr = getTrendRequest(clientInput, true);
   axios
     .get(requestStr)
@@ -201,7 +201,7 @@ function getTrendRequest(clientInput, historical)
   var start = clientInput.from;
   var end = clientInput.to;
   var home = clientInput.departure;
-  var destination = clientInput.destination || "LAS";
+  var destination = clientInput.destination;
   var url = "https://api-crt.cert.havail.sabre.com";
   var endpoint = "";
 
