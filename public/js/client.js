@@ -3,8 +3,9 @@
 // 2. FUNCTIONS TO SUPPORT ALL CLIENT FILES
 
 // ***************** SECTION 1 - DOCUMENT.READY() ***********************
+
 $(document).ready(function ()
-{
+{ 
   var fileName = location.pathname.split("/").slice(-1).toString();
 
   if (fileName === "destination.html")
@@ -16,6 +17,11 @@ $(document).ready(function ()
       var resultsJson = JSON.parse(localStorage.getItem("fareResults"));
       $("#results").text(resultsJson[0].destination);
       console.log(resultsJson);
+      createList();
+     
+
+       
+   
     }
   }
   else
@@ -30,7 +36,7 @@ $(document).ready(function ()
       {
         var activities = data.Themes;
         var activityDropdown = $("#activity");
-
+        
         for (activity in activities)
         {
           var option = $("<option>");
@@ -110,6 +116,57 @@ $(document).ready(function ()
       return t.toUpperCase();
     });
   }
+
+  function createList(){
+      console.log($("#clientInput"));
+      //var clientInput = JSON.parse(localStorage.getItem("clientInput"));
+      $(".lead").html("These are our suggested destinations based on the activity-" + localStorage.getItem("clientInput") + ", sorted by fare price.");
+          
+    // List the destination airports based on the chosen theme. If more than 5, just limit to 5. 
+      var m;
+
+      if(resultsJson.length <= 5){
+         m=resultsJson.length;
+        }else{
+         m=5;
+      }
+
+      for(var i=0; i<m; i++){
+         var listClass =$("<li class='list-group-item'>");
+
+         var buttonClass = $('<button data-target="#myModal" data-toggle="modal" type="button" class="btn btn-info chart" data-city = "'+ resultsJson[i].destinationCode + '"> See Fare History </button>');
+
+         var des = resultsJson[i].destination;
+
+         var fare = resultsJson[i].fare;
+         
+         var desClass = $('<p style="margin-left: 10px">' + des + '</p>');
+
+         var fareClass = $('<p style="margin-left: 10px">$' + fare + '</p>');
+
+
+
+
+         listClass.append(desClass);
+
+         listClass.append(fareClass);
+         
+         //listClass.append(listContent);
+         
+         listClass.append(buttonClass);
+
+         $(".list-group").append(listClass);
+       }
+     }
+
+     //'button' here is the buttons dynamically created on the destination.html 
+    //  $('button').on('click',function(){
+    //   var airport = $(this).data('city');
+    //   //call the airfare trend chart of the airport: //
+    //   drawChart(airport);
+  
+    // });
+
 });
 
 // ***************** SECTION 2 - FUNCTIONS TO SUPPORT CLIENT FILES ***************
