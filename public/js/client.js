@@ -15,8 +15,8 @@ $(document).ready(function ()
       // *************** SARAH - THIS IS FOR YOU  ************** //
 
       var resultsJson = JSON.parse(localStorage.getItem("fareResults"));
-      $("#results").text(resultsJson[0].destination);
-      console.log(resultsJson);
+      //$("#results").text(resultsJson[0].destination);
+      //console.log(resultsJson);
       createList();
     }
   }
@@ -119,9 +119,18 @@ $(document).ready(function ()
   }
 
   function createList(){
+<<<<<<< HEAD
+   
+      
+      var theme = JSON.parse(localStorage.getItem("clientInput"));
+      $(".lead").html("These are our suggested destinations based on the activity-" + theme[0].activity + ", sorted by fare price.");
+         
+    // List the destination airports based on the chosen theme. If more than 5, just limit to 5. 
+=======
       $(".lead").html("These are our suggested destinations based on the activity-" + localStorage.getItem("clientInput") + ", sorted by fare price.");
 
     // List the destination airports based on the chosen theme. If more than 5, just limit to 5.
+>>>>>>> master
       var m;
 
       if(resultsJson.length <= 5){
@@ -131,33 +140,52 @@ $(document).ready(function ()
       }
 
       for(var i=0; i<m; i++){
-         var listClass =$("<li class='list-group-item'>");
+        console.log(resultsJson[i].destinationCode);
+         var listClass =$('<div class="row" style = "background-color:lightblue; margin-top:10px; padding: 5px; font-weight: bold; border: 1px solid white;border-radius:5px;" >');
+         
 
-         var buttonClass = $('<button data-target="#myModal" data-toggle="modal" type="button" class="btn btn-info chart" data-city = "'+ resultsJson[i].destinationCode + '"> See Fare History </button>');
+         var buttonClass = $('<div class="col-4"><button data-target="#myModal" data-toggle="modal" type="button" class="btn btn-info chart" style = "font-weight: bold" data-city = "'+ resultsJson[i].destinationCode + '"> See Fare History </button></div>');
 
          var des = resultsJson[i].destination;
 
          var fare = resultsJson[i].fare;
+<<<<<<< HEAD
+         
+         var desClass = $('<div class="col-4">' + des + '</div>');
+=======
 
          var desClass = $('<p style="margin-left: 10px">' + des + '</p>');
 
          var fareClass = $('<p style="margin-left: 10px">$' + fare + '</p>');
+>>>>>>> master
 
+         var fareClass = $('<div class="col-4">$' + fare + '</div>');
 
+         
 
 
          listClass.append(desClass);
 
          listClass.append(fareClass);
+<<<<<<< HEAD
+         
+  
+         
+=======
 
          //listClass.append(listContent);
 
+>>>>>>> master
          listClass.append(buttonClass);
 
-         $(".list-group").append(listClass);
+         $("#des-row").append(listClass);
+        
        }
      }
 
+<<<<<<< HEAD
+     
+=======
      //'button' here is the buttons dynamically created on the destination.html
     //  $('button').on('click',function(){
     //   var airport = $(this).data('city');
@@ -165,6 +193,7 @@ $(document).ready(function ()
     //   drawChart(airport);
 
     // });
+>>>>>>> master
 
 });
 
