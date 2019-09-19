@@ -167,15 +167,9 @@ $(document).ready(function ()
          listClass.append(desClass);
 
          listClass.append(fareClass);
-<<<<<<< HEAD
          
   
          
-=======
-
-         //listClass.append(listContent);
-
->>>>>>> master
          listClass.append(buttonClass);
 
          $("#des-row").append(listClass);
@@ -183,17 +177,7 @@ $(document).ready(function ()
        }
      }
 
-<<<<<<< HEAD
      
-=======
-     //'button' here is the buttons dynamically created on the destination.html
-    //  $('button').on('click',function(){
-    //   var airport = $(this).data('city');
-    //   //call the airfare trend chart of the airport: //
-    //   drawChart(airport);
-
-    // });
->>>>>>> master
 
 });
 
