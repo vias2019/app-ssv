@@ -119,18 +119,12 @@ $(document).ready(function ()
   }
 
   function createList(){
-<<<<<<< HEAD
    
       
       var theme = JSON.parse(localStorage.getItem("clientInput"));
       $(".lead").html("These are our suggested destinations based on the activity-" + theme[0].activity + ", sorted by fare price.");
          
     // List the destination airports based on the chosen theme. If more than 5, just limit to 5. 
-=======
-      $(".lead").html("These are our suggested destinations based on the activity-" + localStorage.getItem("clientInput") + ", sorted by fare price.");
-
-    // List the destination airports based on the chosen theme. If more than 5, just limit to 5.
->>>>>>> master
       var m;
 
       if(resultsJson.length <= 5){
@@ -149,15 +143,8 @@ $(document).ready(function ()
          var des = resultsJson[i].destination;
 
          var fare = resultsJson[i].fare;
-<<<<<<< HEAD
          
          var desClass = $('<div class="col-4">' + des + '</div>');
-=======
-
-         var desClass = $('<p style="margin-left: 10px">' + des + '</p>');
-
-         var fareClass = $('<p style="margin-left: 10px">$' + fare + '</p>');
->>>>>>> master
 
          var fareClass = $('<div class="col-4">$' + fare + '</div>');
 
@@ -167,15 +154,9 @@ $(document).ready(function ()
          listClass.append(desClass);
 
          listClass.append(fareClass);
-<<<<<<< HEAD
          
   
          
-=======
-
-         //listClass.append(listContent);
-
->>>>>>> master
          listClass.append(buttonClass);
 
          $("#des-row").append(listClass);
@@ -183,17 +164,7 @@ $(document).ready(function ()
        }
      }
 
-<<<<<<< HEAD
      
-=======
-     //'button' here is the buttons dynamically created on the destination.html
-    //  $('button').on('click',function(){
-    //   var airport = $(this).data('city');
-    //   //call the airfare trend chart of the airport: //
-    //   drawChart(airport);
-
-    // });
->>>>>>> master
 
 });
 
