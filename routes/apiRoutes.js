@@ -38,16 +38,16 @@ module.exports = function(app)
                 return airportItem.dataValues.code === curDestination;
               });
 
-                if (allFares[fare].LowestFare.Fare)
-                {
-                    fareObj =
+              if (allFares[fare].LowestFare.Fare)
+              {
+                fareObj =
                     {
-                        destination: airportRow.airport,
-                        destinationCode: allFares[fare].DestinationLocation,
-                        fare: allFares[fare].LowestFare.Fare,
-                    }
-                    clientOutput.push(fareObj);
-                }
+                      destination: airportRow.airport,
+                      destinationCode: allFares[fare].DestinationLocation,
+                      fare: allFares[fare].LowestFare.Fare,
+                    };
+                clientOutput.push(fareObj);
+              }
             }
 
             var promises = [];
@@ -59,33 +59,33 @@ module.exports = function(app)
             }
 
             Promise.all(promises)
-            .then(function(results)
-            {
+              .then(function(results)
+              {
                 for (promise in results)
                 {
-                    if (!results[promise]) continue;
-                    currentPromiseData = results[promise].data;
-                    for (fareobj in clientOutput)
+                  if (!results[promise]) {continue;}
+                  currentPromiseData = results[promise].data;
+                  for (fareobj in clientOutput)
+                  {
+                    if (clientOutput[fareobj].destinationCode === currentPromiseData.DestinationLocation)
                     {
-                        if (clientOutput[fareobj].destinationCode === currentPromiseData.DestinationLocation)
-                        {
-                            clientOutput[fareobj].forecast =
+                      clientOutput[fareobj].forecast =
                             {
-                                trend: currentPromiseData.Direction,
-                                recommendation: currentPromiseData.Recommendation
+                              trend: currentPromiseData.Direction,
+                              recommendation: currentPromiseData.Recommendation
                             };
-                            continue;
-                        }
+                      continue;
                     }
+                  }
                 }
 
                 clientOutput.sort(compare);
                 res.json(clientOutput);
-            })
-            .catch(function(err)
-            {
+              })
+              .catch(function(err)
+              {
                 console.log(err);
-            })
+              });
           });
       })
       .catch(function(err) {

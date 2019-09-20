@@ -119,7 +119,7 @@ $(document).ready(function ()
     var theme = JSON.parse(localStorage.getItem("clientInput"));
     $(".lead").html("Suggested destinations based on the activity - " + titleCase(theme[0].activity) + ":");
 
-console.log(fareResults);
+    console.log(fareResults);
     // List the destination airports based on the chosen theme. If more than 5, just limit to 5.
     var m = 5;
     if(fareResults.length <= 5){
@@ -139,17 +139,17 @@ console.log(fareResults);
       var trendImg = "";
       switch(trend)
       {
-          case "Increase":
-              trendImg = "/images/increasing.png";
-              break;
-          case "Decrease":
-              trendImg = "/images/decreasing.png";
-              break;
-          case "Stay":
-              trendImg = "/images/right.png";
-              break;
-          default:
-              trendImg = "/images/question.png";
+      case "Increase":
+        trendImg = "/images/increasing.png";
+        break;
+      case "Decrease":
+        trendImg = "/images/decreasing.png";
+        break;
+      case "Stay":
+        trendImg = "/images/right.png";
+        break;
+      default:
+        trendImg = "/images/question.png";
       }
 
       var listClass =$('<div class="row justify-content-center mt-2 p-1 font-weight-bold border border-white rounded" style = "background-color:lightblue;" >');
