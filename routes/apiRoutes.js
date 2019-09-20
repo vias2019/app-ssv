@@ -19,6 +19,7 @@ module.exports = function(app)
         var allFares = result.data.FareInfo; // from API
 
         var airportCodes = [];
+
         for (fare in allFares)
         {airportCodes.push(allFares[fare].DestinationLocation);} // 'BOS'
 
@@ -36,17 +37,55 @@ module.exports = function(app)
               {
                 return airportItem.dataValues.code === curDestination;
               });
-              fareObj =
+
+                if (allFares[fare].LowestFare.Fare)
+                {
+                    fareObj =
                     {
-                      destination: airportRow.airport,
-                      destinationCode: allFares[fare].DestinationLocation,
-                      fare: allFares[fare].LowestFare.Fare
-                    };
-              clientOutput.push(fareObj);
+                        destination: airportRow.airport,
+                        destinationCode: allFares[fare].DestinationLocation,
+                        fare: allFares[fare].LowestFare.Fare,
+                    }
+                    clientOutput.push(fareObj);
+                }
             }
 
-            clientOutput.sort(compare);
-            res.json(clientOutput);
+            var promises = [];
+            for (fareobj in clientOutput)
+            {
+              // get future data next
+              var destination = clientOutput[fareobj].destinationCode;
+              promises.push(getChartForecast(clientInput, destination));
+            }
+
+            Promise.all(promises)
+            .then(function(results)
+            {
+                for (promise in results)
+                {
+                    if (!results[promise]) continue;
+                    currentPromiseData = results[promise].data;
+                    for (fareobj in clientOutput)
+                    {
+                        if (clientOutput[fareobj].destinationCode === currentPromiseData.DestinationLocation)
+                        {
+                            clientOutput[fareobj].forecast =
+                            {
+                                trend: currentPromiseData.Direction,
+                                recommendation: currentPromiseData.Recommendation
+                            };
+                            continue;
+                        }
+                    }
+                }
+
+                clientOutput.sort(compare);
+                res.json(clientOutput);
+            })
+            .catch(function(err)
+            {
+                console.log(err);
+            })
           });
       })
       .catch(function(err) {
@@ -58,28 +97,30 @@ module.exports = function(app)
   app.post("/api/trends", function(req, res)
   {
     var clientInput = req.body;
-    var chartOutput = {historical: [], forecast: {}};
 
     // get historical data
     getChartHistorical(clientInput, function(historicalResult)
     {
-      chartOutput.historical = historicalResult;
-
-      // get future data next
-      getChartForecast(clientInput, function(forecastResult)
-      {
-        chartOutput.forecast = forecastResult;
-        res.json(chartOutput);
-      });
+      var chartOutput = historicalResult;
+      res.json(chartOutput);
     });
   });
 };
 
+function getChartForecast(clientInput, destination)
+{
+  requestStr = getTrendRequest(clientInput, destination, false);
+  return axios
+    .get(requestStr)
+    .catch(function(err)
+    {
+      console.log(err);
+    });
+}
+
 function getChartHistorical(clientInput, cb)
 {
-    console.log("REQUEST STRING");
-    console.log(clientInput);
-  var requestStr = getTrendRequest(clientInput, true);
+  var requestStr = getTrendRequest(clientInput, clientInput.destination, true);
   axios
     .get(requestStr)
     .then(function(historicalResult)
@@ -121,9 +162,9 @@ function getChartHistorical(clientInput, cb)
                 {
                   where:
                     {
-                        date: date, // this is the date that the historical data was "shopped"
-                        originCity: origin,
-                        destinationCity: destination
+                      date: date, // this is the date that the historical data was "shopped"
+                      originCity: origin,
+                      destinationCity: destination
                     }
                 }));
             }
@@ -133,10 +174,10 @@ function getChartHistorical(clientInput, cb)
         .then(function()
         {
           db.Chart.findAll({
-              where: {originCity: origin, destinationCity: destination},
-              order:
+            where: {originCity: origin, destinationCity: destination},
+            order:
                 [
-                    ['date', 'ASC'],
+                  ['date', 'ASC'],
                 ]})
             .then(function(allHistorical)
             {
@@ -169,39 +210,12 @@ function getChartHistorical(clientInput, cb)
     });
 }
 
-function getChartForecast(clientInput, cb)
-{
-  requestStr = getTrendRequest(clientInput, false);
-  axios
-    .get(requestStr)
-    .then(function(forecastResult)
-    {
-      var forecastData = forecastResult.data;
-      var forecastOutput =
-        {
-          origin: forecastData.OriginLocation,
-          destination: forecastData.DestinationLocation,
-          start: forecastData.DepartureDateTime,
-          end: forecastData.ReturnDateTime,
-          recommendation: forecastData.Recommendation,
-          fare: forecastData.LowestFare,
-          trend: forecastData.Direction
-        };
-      cb(forecastOutput);
-    })
-    .catch(function(err)
-    {
-      console.log(err);
-    });
-}
-
-function getTrendRequest(clientInput, historical)
+function getTrendRequest(clientInput, destination, historical)
 {
 
   var start = clientInput.from;
   var end = clientInput.to;
   var home = clientInput.departure;
-  var destination = clientInput.destination;
   var url = "https://api-crt.cert.havail.sabre.com";
   var endpoint = "";
 

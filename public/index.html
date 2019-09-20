@@ -16,30 +16,41 @@
 </head>
 
 <body>
+    <div class="container pt-2">
       <div class="jumbotron1">
-        <h1>S<span class="name">arah</span>-S<span class="name">harry</span>-V<span class ="name">iktoriya</span></h1>
+        <h1 class="pt-1">S<span class="name">arah</span>-S<span class="name">harry</span>-V<span class ="name">iktoriya</span> Travel</h1>
         <hr>
         <p class="word">Find the right place to go!</p>
+      </div>
     </div>
-    <br><br>
+    <br>
     <div id="main">
         <form id="clientInput">
-            <div>
-                <span class="bold">What would you like to do?</span>
-                <select id="activity" name="activity"></select>
-                <br><br>
-            </div>
-            <div>
-                <div class="form-group">
-                    <label for="from">From:</label>
-                    <input type="date" id="from" name="from" class="form-control">
-
-                    <label for="to">To:</label>
-                    <input type="date" id ="to" name="to" class="form-control">
-
-                    <label class="control-label">Origin Airport:</label>
-                    <input id="autocomplete" name="departure" type="text" autocomplete="off" />
+            <div class="form-row">
+                <div class="col">
+                    <div class="form-group">
+                        <label for="activity" class="m-0 font-weight-bold">What would you like to do?</label>
+                        <select id="activity" name="activity"></select>
+                    </div>
                 </div>
+            </div>
+            <div class="form-row">
+                <div class="col">
+                <div class="form-group">
+                    <label for="from" class="m-0 font-weight-bold">From:</label>
+                    <input type="date" id="from" name="from" class="form-control">
+                </div>
+                </div>
+                <div class="col">
+                <div class="form-group">
+                    <label for="to" class="m-0 font-weight-bold">To:</label>
+                    <input type="date" id ="to" name="to" class="form-control">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label m-0 font-weight-bold">Origin Airport:</label>
+                <input id="autocomplete" name="departure" type="text" autocomplete="off" />
+            </div>
             </div>
             <button type="submit" id="submit" class="btn btn-primary">Submit</button>
         </form>
