@@ -154,13 +154,13 @@ $(document).ready(function ()
 
       var listClass =$('<div class="row justify-content-center mt-2 p-1 font-weight-bold border border-white rounded" style = "background-color:lightblue;" >');
 
-      var desClass = $('<div class="col-5 my-auto">' + des + '</div>');
+      var desClass = $('<div class="col-md-5 my-auto">' + des + '</div>');
 
-      var fareClass = $('<div class="col-1 my-auto">$' + fare + '</div>');
+      var fareClass = $('<div class="col-md-1 my-auto">$' + fare + '</div>');
 
-      var forecastClass = $('<div class="col-2 my-auto p-0">' + recommendation + '&nbsp;<img class="img-fluid" src="' + trendImg + '" style="width: 30%"></div>');
+      var forecastClass = $('<div class="col-md-2 my-auto p-0">' + recommendation + '<img class="img-fluid" src="' + trendImg + '" style="width: 30%"></div>');
 
-      var buttonClass = $('<div class="col-3 my-auto"><button data-target="#myModal" data-toggle="modal" type="button" class="btn btn-info chart font-weight-bold" data-city = "'+ fareResults[i].destinationCode + '">See Fare History</button></div>');
+      var buttonClass = $('<div class="col-md-3 my-auto"><button data-target="#myModal" data-toggle="modal" type="button" class="btn btn-info chart font-weight-bold" data-city = "'+ fareResults[i].destinationCode + '">See Fare History</button></div>');
 
       listClass.append(desClass);
       listClass.append(fareClass);

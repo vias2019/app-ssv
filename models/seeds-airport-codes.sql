@@ -1,4 +1,4 @@
-    INSERT INTO airports
+    INSERT INTO Airports
     (airport, code)
     VALUES
     ('Aalborg, Denmark ', 'AAL'),
@@ -1650,7 +1650,7 @@
     ('La Paz, Bolivia ', 'LPB'),
     ('La Paz, Mexico ', 'LAP'),
     ('La Rioja, Argentina ', 'IRJ');
-    INSERT INTO airports
+    INSERT INTO Airports
         (airport, code) VALUES
     ('La Romana, Dominican Republic ', 'LRM'),
     ('La Ronge, SK ', 'YVC'),
@@ -3241,7 +3241,7 @@
     ('Trang, Thailand ', 'TST'),
     ('Trapani, Italy ', 'TPS'),
     ('Traralgon, VI, Australia ', 'TGN');
-    INSERT INTO airports (airport,code) VALUES
+    INSERT INTO Airports (airport,code) VALUES
     ('Traverse City, MI ', 'TVC'),
     ('Treasure Cay, Bahamas ', 'TCB'),
     ('Trelew, CB, Argentina ', 'REL'),
