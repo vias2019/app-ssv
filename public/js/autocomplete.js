@@ -38,7 +38,7 @@ var list = $('<div>')
   .appendTo(wrap);
 
 $(document)
-  .on('mouseover', '.autocomplete-result', function(e) {
+  .on('mouseover', '.autocomplete-result', function() {
     var index = parseInt($(this).data('index'), 10);
     if (!isNaN(index)) {
       list.attr('data-highlight', index);
@@ -73,11 +73,11 @@ function search(e) {
     numResults = results.length;
 
     var divs = results.map(function(r, i) {
-        return '<div class="autocomplete-result" data-index="'+ i +'">'
+      return '<div class="autocomplete-result" data-index="'+ i +'">'
              + '<div><b>'+ r.iata +'</b> - '+ r.name +'</div>'
              + '<div class="autocomplete-location">'+ r.city +', '+ r.country +'</div>'
              + '</div>';
-     });
+    });
 
     selectedIndex = -1;
     list.html(divs.join(''))
@@ -91,29 +91,29 @@ function search(e) {
 
 function onKeyDown(e) {
   switch(e.which) {
-    case 38: // up
-      selectedIndex--;
-      if (selectedIndex <= -1) {
-        selectedIndex = -1;
-      }
-      list.attr('data-highlight', selectedIndex);
-      break;
-    case 13: // enter
-      selectIndex(selectedIndex);
-      break;
-    case 9: // enter
-      selectIndex(selectedIndex);
-      e.stopPropagation();
-      return;
-    case 40: // down
-      selectedIndex++;
-      if (selectedIndex >= numResults) {
-        selectedIndex = numResults-1;
-      }
-      list.attr('data-highlight', selectedIndex);
-      break;
+  case 38: // up
+    selectedIndex--;
+    if (selectedIndex <= -1) {
+      selectedIndex = -1;
+    }
+    list.attr('data-highlight', selectedIndex);
+    break;
+  case 13: // enter
+    selectIndex(selectedIndex);
+    break;
+  case 9: // enter
+    selectIndex(selectedIndex);
+    e.stopPropagation();
+    return;
+  case 40: // down
+    selectedIndex++;
+    if (selectedIndex >= numResults) {
+      selectedIndex = numResults-1;
+    }
+    list.attr('data-highlight', selectedIndex);
+    break;
 
-    default: return; // exit this handler for other keys
+  default: return; // exit this handler for other keys
   }
   e.stopPropagation();
   e.preventDefault(); // prevent the default action (scroll / move caret)
