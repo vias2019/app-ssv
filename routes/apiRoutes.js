@@ -1,6 +1,5 @@
 var db = require("../models");
-
-// Axios
+var moment = require("moment");
 var axios = require("axios");
 axios.defaults.headers.common.Authorization = process.env.SABRE_TOKEN;
 
@@ -20,6 +19,7 @@ module.exports = function(app)
         var allFares = result.data.FareInfo; // from API
 
         var airportCodes = [];
+
         for (fare in allFares)
         {airportCodes.push(allFares[fare].DestinationLocation);} // 'BOS'
 
@@ -37,17 +37,55 @@ module.exports = function(app)
               {
                 return airportItem.dataValues.code === curDestination;
               });
-              fareObj =
+
+              if (allFares[fare].LowestFare.Fare)
+              {
+                fareObj =
                     {
                       destination: airportRow.airport,
                       destinationCode: allFares[fare].DestinationLocation,
-                      fare: allFares[fare].LowestFare.Fare
+                      fare: allFares[fare].LowestFare.Fare,
                     };
-              clientOutput.push(fareObj);
+                clientOutput.push(fareObj);
+              }
             }
 
-            clientOutput.sort(compare);
-            res.json(clientOutput);
+            var promises = [];
+            for (fareobj in clientOutput)
+            {
+              // get future data next
+              var destination = clientOutput[fareobj].destinationCode;
+              promises.push(getChartForecast(clientInput, destination));
+            }
+
+            Promise.all(promises)
+              .then(function(results)
+              {
+                for (promise in results)
+                {
+                  if (!results[promise]) {continue;}
+                  currentPromiseData = results[promise].data;
+                  for (fareobj in clientOutput)
+                  {
+                    if (clientOutput[fareobj].destinationCode === currentPromiseData.DestinationLocation)
+                    {
+                      clientOutput[fareobj].forecast =
+                            {
+                              trend: currentPromiseData.Direction,
+                              recommendation: currentPromiseData.Recommendation
+                            };
+                      continue;
+                    }
+                  }
+                }
+
+                clientOutput.sort(compare);
+                res.json(clientOutput);
+              })
+              .catch(function(err)
+              {
+                console.log(err);
+              });
           });
       })
       .catch(function(err) {
@@ -59,28 +97,30 @@ module.exports = function(app)
   app.post("/api/trends", function(req, res)
   {
     var clientInput = req.body;
-    var chartOutput = {historical: [], forecast: {}};
 
     // get historical data
     getChartHistorical(clientInput, function(historicalResult)
     {
-      chartOutput.historical = historicalResult;
-      console.log(" CHART OUTPUT - HISTORICAL ");
-
-      // get future data next
-      getChartForecast(clientInput, function(forecastResult)
-      {
-        chartOutput.forecast = forecastResult;
-        console.log(" CHART OUTPUT - FORECAST ");
-        res.json(chartOutput);
-      });
+      var chartOutput = historicalResult;
+      res.json(chartOutput);
     });
   });
 };
 
+function getChartForecast(clientInput, destination)
+{
+  requestStr = getTrendRequest(clientInput, destination, false);
+  return axios
+    .get(requestStr)
+    .catch(function(err)
+    {
+      console.log(err);
+    });
+}
+
 function getChartHistorical(clientInput, cb)
 {
-  var requestStr = getTrendRequest(clientInput, true);
+  var requestStr = getTrendRequest(clientInput, clientInput.destination, true);
   axios
     .get(requestStr)
     .then(function(historicalResult)
@@ -113,30 +153,19 @@ function getChartHistorical(clientInput, cb)
           })
           .then(function(historicalRow, wasCreated)
           {
-            if (wasCreated)
+            if (!wasCreated)
             {
-              console.log("NEW RECORD: ");
-              console.log(historicalRow);
-            }
-            else
-            {
-              console.log("ROW ALREADY EXISTED: ");
-              console.log(historicalRow);
               promises.push(db.Chart.update(
                 {
                   airfare: airfare,
                 },
                 {
                   where:
-                        {
-                          date: date, // this is the date that the historical data was "shopped"
-                          originCity: origin,
-                          destinationCity: destination
-                        }
-                })
-                .then(function(rowsUpdated)
-                {
-                  console.log(rowsUpdated + " ROWS UPDATED");
+                    {
+                      date: date, // this is the date that the historical data was "shopped"
+                      originCity: origin,
+                      destinationCity: destination
+                    }
                 }));
             }
           }));
@@ -144,22 +173,26 @@ function getChartHistorical(clientInput, cb)
       Promise.all(promises)
         .then(function()
         {
-          db.Chart.findAll({where: {originCity: origin, destinationCity: destination}})
+          db.Chart.findAll({
+            where: {originCity: origin, destinationCity: destination},
+            order:
+                [
+                  ['date', 'ASC'],
+                ]})
             .then(function(allHistorical)
             {
               var historicalArray = [];
+              // HEADER ROW
+              var record = ["Date", "Price"];
+              historicalArray.push(record);
+
+              // DATA ROWS
               for (historicalRow in allHistorical)
               {
                 var currentRow = allHistorical[historicalRow].dataValues;
-                console.log(" HISTORICAL DATA ROW ");
-                console.log(currentRow);
-                historicalArray.push(
-                  {
-                    origin: currentRow.originCity,
-                    destination: currentRow.destinationCity,
-                    date: currentRow.date,
-                    airfare: currentRow.airfare
-                  });
+                var rowDate = moment(currentRow.date).format('MM/DD');
+                record = [rowDate, currentRow.airfare];
+                historicalArray.push(record);
               }
               cb(historicalArray);
             });
@@ -167,53 +200,22 @@ function getChartHistorical(clientInput, cb)
         .catch(function(err)
         {
           console.log(err);
-          res.send(err);
+          cb(err);
         });
     })
     .catch(function (err)
     {
       console.log(err);
-      res.send(err);
+      cb(err);
     });
 }
 
-function getChartForecast(clientInput, cb)
-{
-  requestStr = getTrendRequest(clientInput, false);
-  axios
-    .get(requestStr)
-    .then(function(forecastResult)
-    {
-      var forecastData = forecastResult.data;
-      console.log("*************** FORECAST DATA *********************");
-      //console.log(forecastData);
-
-      var forecastOutput =
-        {
-          origin: forecastData.OriginLocation,
-          destination: forecastData.DestinationLocation,
-          start: forecastData.DepartureDateTime,
-          end: forecastData.ReturnDateTime,
-          recommendation: forecastData.Recommendation,
-          fare: forecastData.LowestFare,
-          trend: forecastData.Direction
-        };
-      console.log(forecastOutput);
-      cb(forecastOutput);
-    })
-    .catch(function(err)
-    {
-      console.log(err);
-    });
-}
-
-function getTrendRequest(clientInput, historical)
+function getTrendRequest(clientInput, destination, historical)
 {
 
   var start = clientInput.from;
   var end = clientInput.to;
   var home = clientInput.departure;
-  var destination = clientInput.destination || "LAS";
   var url = "https://api-crt.cert.havail.sabre.com";
   var endpoint = "";
 

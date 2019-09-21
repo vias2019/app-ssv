@@ -2,23 +2,20 @@
   line-height: 2.5;
 }
 .jumbotron1 {
-  height: 150px;
   border: 2px solid white;
   border-radius: 25px;
-  padding: 20px;
+  padding-left: 10px;
+  background-color: rgb(131, 176, 202);
  }
 h1 {
   font-size: 40px;
   font-family: URW Chancery L, cursive;
-  padding: 15px;
-  margin: 15px;
   color: rgb(33, 33, 85) ;
-}
-.jumbotron1 {
-  background-color: rgb(131, 176, 202);
 }
 hr {
   border: 1px solid white;
+  margin-top: .5rem !important;
+  margin-bottom: .5rem !important;
 }
 body {
   background-image: url("../images/sea.jpg");
@@ -31,29 +28,30 @@ body {
 .bold,
 .word {
   font-weight: bold;
-  font-size: 20px;
+  font-size: 30px;
 }
-body {
-  padding: 20px;
-}
+
 #main {
   margin-left: 25%;
   margin-right: 25%;
   max-width: 50%;
 }
-#name {
-  font-size: 15px;
+.name {
+  font-size: 30px;
   color: white;
 }
 .form-control{
   border-radius: 5px;
   height: 25px;
 }
-.btn-primary {
-  border-radius: 5px;
-  height: 25px;
-}
 #dropdown{
   border-radius: 5px;
   height: 25px;
+}
+
+#clientInput{
+  background-color: lightblue;
+  border: 2px solid white;
+  border-radius: 25px;
+  padding: 20px;
 }

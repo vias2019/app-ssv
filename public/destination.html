@@ -12,34 +12,33 @@
     <title>SSV Travel</title>
 </head>
 <body>
-    <div class="jumbotron jumbotron-fluid" style="background-color: transparent">
-        <div class="container" >
-          <h1 class="display-4">Travel Plan</h1>
-          <p class="lead" style="font-weight: bold">This is our suggestted destinations based on the theme you chose, listed in the order of the air fare low to high.</p>
-        </div>
+    <div class="container pt-2">
+      <div class="jumbotron1">
+        <h1 class="pt-1">S<span class="name">arah</span>-S<span class="name">harry</span>-V<span class ="name">iktoriya</span> Travel</h1>
+        <hr>
+        <p class="word">Find the right place to go!</p>
       </div>
+    </div>
+    <br>
+    <div class="jumbotron p-0 m-0" style="background-color: transparent">
+        <div class="container" >
+          <h1 class="display-5 m-0">Travel Plan Results</h1>
+          <p class="lead" style="font-weight: bold"></p>
+        </div>
+    </div>
 
-      <button style ="border-radius: 5px;
-      height: 25px;"onclick="window.location.href='index.html'">Back to Homepage</button>
+    <div class="container w-75" id="des-row">
+        <button style ="height: 40px;  margin-left:-15px; padding: 5px; font-weight: bold"onclick="window.location.href='index.html'">Back to Homepage</button>
+    </div>
 
-      <ul class="list-group list-group-flush"  >
-        <li id="list1"  class="list-group-item" >Portland      &nbsp &nbsp &nbsp &nbsp &nbsp&nbsp &nbsp &nbsp &nbsp &nbsp $180 &nbsp &nbsp &nbsp &nbsp &nbsp<button data-target="#myModal" data-toggle="modal" type="button" class="btn btn-info chart">see the fare trend throughout the year</button> </li>
-        <li class="list-group-item" >San Francisco  &nbsp &nbsp &nbsp &nbsp &nbsp  &nbsp &nbsp$200 &nbsp &nbsp &nbsp &nbsp<button type="button" class="btn btn-info chart">see the fare trend throughout the year</button></li>
-        <li class="list-group-item" >Vancouver       &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp$200 &nbsp &nbsp &nbsp &nbsp<button type="button" class="btn btn-info chart">see the fare trend throughout the year</button></li>
-        <li class="list-group-item" >Los Angeles    &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp$300 &nbsp &nbsp &nbsp &nbsp<button type="button" class="btn btn-info chart">see the fare trend throughout the year</button></li>
-        <li class="list-group-item" >San Diego     &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp $350 &nbsp &nbsp &nbsp &nbsp<button type="button" class="btn btn-info chart">see the fare trend throughout the year</button></li>
-      </ul>
       <div id="myModal" class="modal" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog modal-xl" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title">Airfare Trend</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
+              <h5 class="modal-title">Airfare 2-Week History</h5>
             </div>
             <div class="modal-body">
-              <div id="curve_chart" style="width: 1000px; height: 300px"></div>
+              <div id="curve_chart" style="height: 20rem;"></div>
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -47,6 +46,7 @@
           </div>
         </div>
       </div>
+<br><br>
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
@@ -56,6 +56,5 @@
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
     <script src="js/client.js"></script>
-    <script src="js/chart.js"></script>
 </body>
 </html>

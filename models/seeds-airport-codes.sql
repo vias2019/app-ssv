@@ -1,16 +1,4 @@
-DROP DATABASE IF EXISTS airport_db;
-CREATE DATABASE airport_db;
-
-use airport_db;
-CREATE TABLE airports
-(
-    id integer NOT NULL auto_increment,
-    airport varchar(255) NOT NULL,
-    code varchar(4) NOT NULL,
-    PRIMARY KEY (id)
-);
-
-    INSERT INTO airports
+    INSERT INTO Airports
     (airport, code)
     VALUES
     ('Aalborg, Denmark ', 'AAL'),
@@ -1662,7 +1650,7 @@ CREATE TABLE airports
     ('La Paz, Bolivia ', 'LPB'),
     ('La Paz, Mexico ', 'LAP'),
     ('La Rioja, Argentina ', 'IRJ');
-    INSERT INTO airports
+    INSERT INTO Airports
         (airport, code) VALUES
     ('La Romana, Dominican Republic ', 'LRM'),
     ('La Ronge, SK ', 'YVC'),
@@ -3253,7 +3241,7 @@ CREATE TABLE airports
     ('Trang, Thailand ', 'TST'),
     ('Trapani, Italy ', 'TPS'),
     ('Traralgon, VI, Australia ', 'TGN');
-    INSERT INTO airports (airport,code) VALUES
+    INSERT INTO Airports (airport,code) VALUES
     ('Traverse City, MI ', 'TVC'),
     ('Treasure Cay, Bahamas ', 'TCB'),
     ('Trelew, CB, Argentina ', 'REL'),

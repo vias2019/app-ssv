@@ -10,13 +10,11 @@ var PORT = process.env.PORT || 8080;
 // Middleware
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
-app.use(express.static("public"));
+app.use(express.static(__dirname + "/public"));
 
 // Routes
-require("./routes/apiHome")(app);
 require("./routes/apiRoutes")(app);
 require("./routes/htmlRoutes")(app);
-require("./routes/apiChart")(app);
 
 var syncOptions = { force: false };
 
