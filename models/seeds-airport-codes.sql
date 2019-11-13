@@ -1,4 +1,4 @@
-    INSERT INTO airports
+    INSERT INTO Airports
     (airport, code)
     VALUES
     ('Aalborg, Denmark ', 'AAL'),
