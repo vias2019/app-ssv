@@ -21,6 +21,7 @@ HOW TO GET SABRE APIs WORKING
     f. ** Select the "Body" tab **
     g. Select the "x-www-form-urlencoded" option on the Body tab.
     h. Add "grant_type" (without quotes) as a key, and enter "client_credentials" (without quotes) as the value.
+       In Authorization tab, select basic and input Client ID and password converted to 64bit base once.
     i.Click the "Send" button.
     j. You should now have a response from Sabre that has an "access-token". If not, get the error and contact me so I can help troubleshoot.
     k. Copy your "access-token"
